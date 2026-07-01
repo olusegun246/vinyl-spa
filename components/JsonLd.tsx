@@ -10,12 +10,12 @@ export default function JsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: "Vinyl Press Studio",
+    name: "Vinyl Supplies & More",
     description:
       "Premium custom vinyl printing for businesses, teams, and events — banners, vehicle wraps, apparel, decals, and event signage.",
     url: "https://your-domain.com", // REPLACE
     telephone: "+1-555-010-2024", // REPLACE
-    email: "hello@vinylpress.studio", // REPLACE
+    email: "hello@vinylsuppliesandmore.com", // REPLACE
     image: "https://your-domain.com/og.jpg", // REPLACE
     address: {
       "@type": "PostalAddress",

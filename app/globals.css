@@ -2,9 +2,19 @@
 
 /* === Tailwind v4 theme tokens (replaces the old tailwind.config object) === */
 @theme {
-  --color-ink: #0a0a0a;
+  --color-brand-blue: #0066cc;
+  --color-brand-cyan: #06b6d4;
+  --color-brand-cyan-dark: #0891b2;
+  --color-brand-amber: #ff9f0a;
+  --color-brand-emerald: #30d158;
+  --color-ink: #1d1d1f;
+  --color-ink-light: #515154;
+  --color-ink-muted: #86868b;
   --color-paper: #ffffff;
-  --color-accent: #1a1a1a;
+  --color-paper-cool: #f5f5f7;
+  --color-paper-backdrop: #fbfbfd;
+  --color-border-subtle: #e5e5ea;
+  --color-border-medium: #d2d2d7;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -22,46 +32,84 @@ body {
   overflow-x: hidden;
 }
 
-/* === Navigation === */
+/* === Custom Grid Background (representing a vinyl cutting alignment mat) === */
+.grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(210, 210, 215, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(210, 210, 215, 0.25) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* === Glassmorphism Navigation === */
+.glass-nav {
+  background: rgba(245, 245, 247, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(210, 210, 215, 0.5);
+}
+
+/* === Navigation Links === */
 .nav-link.active {
-  color: #0a0a0a;
+  color: var(--color-brand-blue);
 }
 
 .nav-link.active::after {
   content: "";
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #0a0a0a;
+  width: 16px;
+  height: 2px;
+  border-radius: 9999px;
+  background: var(--color-brand-blue);
+  transition: all 0.3s ease;
 }
 
-/* === Vinyl Record Animation === */
-.vinyl-spin {
-  animation: spin 8s linear infinite;
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 16px;
+  height: 2px;
+  border-radius: 9999px;
+  background: var(--color-brand-cyan);
+  transition: transform 0.3s ease;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.nav-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
-/* === Floating Cards === */
+/* === Premium Shadow and Borders === */
+.premium-card {
+  background: var(--color-paper);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 4px 30px rgba(15, 23, 42, 0.015), 0 1px 3px rgba(15, 23, 42, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.15);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05), 0 1px 8px rgba(15, 23, 42, 0.02);
+}
+
+/* === Floating Animation === */
 .floating-card {
-  animation: float 3s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-8px); }
 }
 
-/* === Marquee === */
+/* === Seamless Marquee === */
 .animate-marquee {
-  animation: marquee 25s linear infinite;
+  animation: marquee 30s linear infinite;
 }
 
 @keyframes marquee {
@@ -72,8 +120,8 @@ body {
 /* === Fade In Animations === */
 .fade-in-up {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fade-in-up.visible {
@@ -81,7 +129,7 @@ body {
   transform: translateY(0);
 }
 
-/* === Service Cards === */
+/* === Interactive Service Cards === */
 .service-card {
   position: relative;
   overflow: hidden;
@@ -93,70 +141,54 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background: #0a0a0a;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-brand-blue), var(--color-brand-cyan));
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .service-card:hover::before {
   transform: scaleX(1);
 }
 
-/* === Form Input === */
+/* === Form Inputs === */
 .form-input {
   font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
 .form-input:focus {
-  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.05);
+  border-color: var(--color-brand-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* === Product Card === */
-.product-card {
-  transition: all 0.4s ease;
+/* === Selection === */
+::selection {
+  background: var(--color-brand-blue);
+  color: #ffffff;
 }
 
-.product-card:hover {
-  transform: translateY(-4px);
-}
-
-.product-card .product-image {
-  transition: transform 0.5s ease;
-}
-
-.product-card:hover .product-image {
-  transform: scale(1.05);
-}
-
-/* === Scrollbar === */
+/* === Custom Scrollbar === */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: var(--color-paper-cool);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: var(--color-border-medium);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
-/* === Selection === */
-::selection {
-  background: #0a0a0a;
-  color: #ffffff;
+  background: var(--color-ink-muted);
 }
 
 /* === Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {
-  .vinyl-spin,
   .floating-card,
   .animate-marquee {
     animation: none;

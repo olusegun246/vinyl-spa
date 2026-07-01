@@ -21,18 +21,18 @@ export default function Navbar() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100 transition-all duration-300">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white border-b border-border-subtle shadow-sm transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-            <Link href="/" className="flex items-center group">
-            <Image
+        <Link href="/" className="flex items-center group py-2">
+          <Image
             src="/logo.png"
-            alt="Vinyl Supply & More"
+            alt="Vinyl Supplies & More"
             width={1081}
             height={200}
             priority
-            className="h-9 md:h-10 w-auto"
-         />
+            className="h-11 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+          />
         </Link>
 
         {/* Desktop nav */}
@@ -41,8 +41,8 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`nav-link px-4 py-2 text-sm font-medium transition-colors relative ${
-                isActive(link.href) ? "active text-ink" : "text-gray-500 hover:text-ink"
+              className={`nav-link px-4 py-2 text-sm font-semibold transition-colors relative ${
+                isActive(link.href) ? "active text-brand-blue" : "text-ink-light hover:text-brand-blue"
               }`}
             >
               {link.label}
@@ -50,7 +50,7 @@ export default function Navbar() {
           ))}
           <Link
             href="/store"
-            className="ml-4 px-5 py-2.5 bg-ink text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-all hover:scale-105"
+            className="ml-4 px-5 py-2.5 bg-brand-blue text-white text-sm font-semibold rounded-full hover:bg-brand-blue/90 shadow-md shadow-brand-blue/10 hover:shadow-lg hover:shadow-brand-blue/20 transition-all hover:scale-105 duration-300"
           >
             Shop Now
           </Link>
@@ -58,7 +58,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 -mr-2"
+          className="md:hidden p-2 -mr-2 text-ink hover:text-brand-blue transition-colors"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
@@ -69,15 +69,17 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-white border-t border-gray-100">
+        <div className="md:hidden bg-white border-t border-border-subtle animate-in fade-in slide-in-from-top-4 duration-200">
           <div className="px-6 py-4 flex flex-col gap-1">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className={`px-4 py-3 text-sm font-medium rounded-lg hover:bg-gray-50 ${
-                  isActive(link.href) ? "text-ink" : "text-gray-600"
+                className={`px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
+                  isActive(link.href)
+                    ? "bg-brand-blue/5 text-brand-blue"
+                    : "text-ink-light hover:bg-paper-cool hover:text-brand-blue"
                 }`}
               >
                 {link.label}
@@ -86,7 +88,7 @@ export default function Navbar() {
             <Link
               href="/store"
               onClick={() => setOpen(false)}
-              className="mt-2 px-4 py-3 bg-ink text-white text-sm font-medium rounded-lg text-center"
+              className="mt-2 px-4 py-3 bg-brand-blue text-white text-sm font-semibold rounded-xl text-center shadow-md shadow-brand-blue/10 hover:bg-brand-blue/90"
             >
               Shop Now
             </Link>
