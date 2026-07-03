@@ -9,7 +9,7 @@ import Image from "next/image";
 const links = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
-  { href: "/store", label: "Store" },
+  { href: "/design", label: "Design Online" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -49,10 +49,10 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="/store"
+            href="/design"
             className="ml-4 px-5 py-2.5 bg-brand-blue text-white text-sm font-semibold rounded-full hover:bg-brand-blue/90 shadow-md shadow-brand-blue/10 hover:shadow-lg hover:shadow-brand-blue/20 transition-all hover:scale-105 duration-300"
           >
-            Shop Now
+            Design Online
           </Link>
         </div>
 
@@ -86,11 +86,11 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/store"
+              href="/design"
               onClick={() => setOpen(false)}
               className="mt-2 px-4 py-3 bg-brand-blue text-white text-sm font-semibold rounded-xl text-center shadow-md shadow-brand-blue/10 hover:bg-brand-blue/90"
             >
-              Shop Now
+              Design Online
             </Link>
           </div>
         </div>
