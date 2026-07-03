@@ -218,15 +218,15 @@ function DesignWorkspaceContent() {
   };
 
   return (
-    <section className="py-16 md:py-24 px-6 lg:px-12 bg-gradient-to-b from-[#1b0303] via-[#0d0101] to-[#1b0303] min-h-screen grid-bg relative overflow-hidden">
-      {/* Top Header Ambient radial glows (Muted Burgundy/Rose) */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-rose-950/15 rounded-full blur-[140px] pointer-events-none -translate-y-1/2 -translate-x-1/4" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-950/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
+    <section className="py-16 md:py-24 px-6 lg:px-12 bg-gradient-to-b from-[#f1f5f9] via-[#e2e8f0] to-[#f1f5f9] min-h-screen grid-bg relative overflow-hidden">
+      {/* Top Header Ambient radial glows */}
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[140px] pointer-events-none -translate-y-1/2 -translate-x-1/4" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-cyan/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
 
       {/* Soft Brand Ambient radial glows (Starts below hero) */}
-      <div className="absolute top-[480px] right-0 w-[700px] h-[700px] bg-red-900/10 rounded-full blur-[140px] pointer-events-none translate-x-1/4" />
-      <div className="absolute bottom-[200px] left-0 w-[600px] h-[600px] bg-rose-950/12 rounded-full blur-[120px] pointer-events-none -translate-x-1/4" />
-      <div className="absolute bottom-0 left-1/2 w-[800px] h-[800px] bg-red-950/10 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 translate-y-1/3" />
+      <div className="absolute top-[480px] right-0 w-[700px] h-[700px] bg-brand-blue/15 rounded-full blur-[140px] pointer-events-none translate-x-1/4" />
+      <div className="absolute bottom-[200px] left-0 w-[600px] h-[600px] bg-brand-cyan/15 rounded-full blur-[120px] pointer-events-none -translate-x-1/4" />
+      <div className="absolute bottom-0 left-1/2 w-[800px] h-[800px] bg-brand-blue/10 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 translate-y-1/3" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
