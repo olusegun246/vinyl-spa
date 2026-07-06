@@ -49,10 +49,10 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href="/design"
+            href="/gallery"
             className="ml-4 px-5 py-2.5 bg-brand-blue text-white text-sm font-semibold rounded-full hover:bg-brand-blue/90 shadow-md shadow-brand-blue/10 hover:shadow-lg hover:shadow-brand-blue/20 transition-all hover:scale-105 duration-300"
           >
-            Design Online
+            Our Work
           </Link>
         </div>
 
@@ -86,11 +86,11 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/design"
+              href="/gallery"
               onClick={() => setOpen(false)}
               className="mt-2 px-4 py-3 bg-brand-blue text-white text-sm font-semibold rounded-xl text-center shadow-md shadow-brand-blue/10 hover:bg-brand-blue/90"
             >
-              Design Online
+              Our Work
             </Link>
           </div>
         </div>

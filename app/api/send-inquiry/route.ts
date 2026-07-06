@@ -4,26 +4,16 @@ import nodemailer from "nodemailer";
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
-    const file = formData.get("file") as File | null;
-    const serviceTitle = (formData.get("serviceTitle") as string) || "Unknown";
-    const slug = (formData.get("slug") as string) || "general";
     const firstName = (formData.get("firstName") as string) || "";
     const lastName = (formData.get("lastName") as string) || "";
     const phone = (formData.get("phone") as string) || "";
     const occasion = (formData.get("occasion") as string) || "Personal";
+    const projectTitle = (formData.get("projectTitle") as string) || "Unknown Project";
+    const description = (formData.get("description") as string) || "";
 
-    if (!file) {
-      return NextResponse.json({ error: "No print PDF file found." }, { status: 400 });
+    if (!firstName || !lastName || !phone) {
+      return NextResponse.json({ error: "Contact fields are required." }, { status: 400 });
     }
-
-    // Basic guard: only accept PDFs
-    if (file.type !== "application/pdf") {
-      return NextResponse.json({ error: "Only PDF files are accepted." }, { status: 400 });
-    }
-
-    // Convert the uploaded file into a Buffer we can attach to the email
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
 
     // Make sure the credentials exist before trying to send
     const user = process.env.GMAIL_USER;
@@ -42,12 +32,12 @@ export async function POST(request: Request) {
       auth: { user, pass },
     });
 
-    // Send the email with the PDF attached, to the submissions inbox
+    // Send the email to the submissions inbox
     await transporter.sendMail({
       from: `"Vinyl Supply & More Site" <${user}>`,
       to: "vinylsubmissions@gmail.com",
-      subject: `New Canva Design Submission: ${firstName} ${lastName} - ${serviceTitle}`,
-      text: `A new print-ready PDF design has been submitted through the website.
+      subject: `New Project Inquiry: ${firstName} ${lastName} - ${projectTitle}`,
+      text: `A customer has sent an inquiry regarding a previous project from the Our Work gallery.
 
 Customer Contact Details:
 -------------------------
@@ -55,29 +45,21 @@ Name: ${firstName} ${lastName}
 Phone: ${phone}
 Occasion: ${occasion}
 
-Print Specs Selected:
----------------------
-Product Type: ${serviceTitle}
-Dimensions key: ${slug}
-File Name: ${file.name}
-File Size: ${(file.size / 1024 / 1024).toFixed(2)} MB
+Inquired Project:
+-----------------
+Project Style: ${projectTitle}
 
-The PDF design file is attached to this email.`,
-      attachments: [
-        {
-          filename: file.name,
-          content: buffer,
-          contentType: "application/pdf",
-        },
-      ],
+Custom Tweaks / Description:
+----------------------------
+${description || "(No modifications specified. Customer wants the project style as shown.)"}`,
     });
 
     return NextResponse.json({
       success: true,
-      message: `Print-ready file "${file.name}" sent to vinylsubmissions@gmail.com.`,
+      message: `Inquiry for "${projectTitle}" sent to vinylsubmissions@gmail.com.`,
     });
   } catch (err) {
-    console.error("Error sending print PDF:", err);
+    console.error("Error sending gallery inquiry:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

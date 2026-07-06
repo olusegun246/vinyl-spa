@@ -2,19 +2,12 @@
 
 import { useState, useRef, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { 
-  Sparkles, 
-  UploadCloud, 
-  FileText, 
-  CheckCircle, 
-  AlertCircle, 
-  CreditCard, 
-  ShieldCheck, 
-  Layout, 
-  Palette, 
-  FileDown, 
-  Send,
+import {
+  UploadCloud,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+  FileDown,
   HelpCircle
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
@@ -85,22 +78,21 @@ function DesignWorkspaceContent() {
       }
     }
   }, [categoryParam]);
-  
+
   // File upload states
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Clover Payment states
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [processing, setProcessing] = useState(false);
-  const [cardNumber, setCardNumber] = useState("");
-  const [cardExpiry, setCardExpiry] = useState("");
-  const [cardCVC, setCardCVC] = useState("");
-  const [cardName, setCardName] = useState("");
-  const [paymentError, setPaymentError] = useState("");
+  // Customer Contact Info states
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [occasion, setOccasion] = useState("Personal");
+  const [formError, setFormError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -118,24 +110,55 @@ function DesignWorkspaceContent() {
     setDragActive(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      validateAndUploadFile(e.dataTransfer.files[0]);
+      validateAndSelectFile(e.dataTransfer.files[0]);
     }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      validateAndUploadFile(e.target.files[0]);
+      validateAndSelectFile(e.target.files[0]);
     }
   };
 
-  const validateAndUploadFile = async (selectedFile: File) => {
+  const validateAndSelectFile = (selectedFile: File) => {
     if (selectedFile.type !== "application/pdf") {
       alert("Only PDF files are accepted for print-ready uploads.");
       return;
     }
-
     setFile(selectedFile);
-    setUploading(true);
+    setFormError("");
+    setSubmitSuccess(false);
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Format input as phone: (XXX) XXX-XXXX
+    const raw = e.target.value.replace(/[^0-9]/g, "");
+    let formatted = raw;
+    if (raw.length > 3 && raw.length <= 6) {
+      formatted = `(${raw.slice(0, 3)}) ${raw.slice(3)}`;
+    } else if (raw.length > 6) {
+      formatted = `(${raw.slice(0, 3)}) ${raw.slice(3, 6)}-${raw.slice(6, 10)}`;
+    }
+    setPhone(formatted);
+  };
+
+  const handleSubmitDesign = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firstName.trim() || !lastName.trim() || !phone.trim()) {
+      setFormError("Please fill out all contact info fields.");
+      return;
+    }
+    if (!file) {
+      setFormError("Please upload your PDF design file.");
+      return;
+    }
+
+    setFormError("");
+    setSubmitting(true);
     setProgress(0);
 
     const interval = setInterval(() => {
@@ -150,9 +173,13 @@ function DesignWorkspaceContent() {
 
     try {
       const formData = new FormData();
-      formData.append("file", selectedFile);
+      formData.append("file", file);
       formData.append("serviceTitle", activeTemplate.name);
       formData.append("slug", activeTemplate.id);
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("phone", phone);
+      formData.append("occasion", occasion);
 
       const res = await fetch("/api/send-print", {
         method: "POST",
@@ -163,58 +190,20 @@ function DesignWorkspaceContent() {
       if (res.ok) {
         setProgress(100);
         setTimeout(() => {
-          setUploading(false);
+          setSubmitting(false);
+          setSubmitSuccess(true);
         }, 300);
       } else {
-        alert("There was an issue sending your file. Please try again.");
-        setFile(null);
-        setUploading(false);
+        const data = await res.json();
+        setFormError(data.error || "There was an issue sending your file. Please try again.");
+        setSubmitting(false);
       }
     } catch (err) {
       clearInterval(interval);
       console.error(err);
-      alert("Upload failed. Please try again.");
-      setFile(null);
-      setUploading(false);
+      setFormError("Submission failed. Please check your connection and try again.");
+      setSubmitting(false);
     }
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-    const formatted = value.match(/.{1,4}/g)?.join(" ") || value;
-    setCardNumber(formatted.substring(0, 19));
-  };
-
-  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/[^0-9]/g, "");
-    if (value.length > 2) {
-      value = `${value.slice(0, 2)}/${value.slice(2, 4)}`;
-    }
-    setCardExpiry(value.substring(0, 5));
-  };
-
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!file) {
-      setPaymentError("Please upload your print-ready PDF file first before placing your deposit.");
-      return;
-    }
-    if (!cardName || cardNumber.length < 15 || cardExpiry.length < 5 || cardCVC.length < 3) {
-      setPaymentError("Please fill in valid Clover secure card checkout fields.");
-      return;
-    }
-
-    setPaymentError("");
-    setProcessing(true);
-
-    setTimeout(() => {
-      setProcessing(false);
-      setPaymentSuccess(true);
-    }, 2500);
   };
 
   return (
@@ -229,7 +218,7 @@ function DesignWorkspaceContent() {
       <div className="absolute bottom-0 left-1/2 w-[800px] h-[800px] bg-brand-blue/10 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 translate-y-1/3" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
+
         {/* Page Header Split Hero Section */}
         <div className="grid lg:grid-cols-12 gap-12 items-center mb-16">
           <Reveal className="lg:col-span-7 text-left">
@@ -237,7 +226,7 @@ function DesignWorkspaceContent() {
               Design Your Own <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">Prints</span>
             </h1>
             <p className="text-base md:text-lg text-black leading-relaxed">
-              Select a template dimension, design online using Canva, download your print-ready PDF, and upload it below to submit your secure deposit.
+              Select a template dimension, design online using Canva, download your print-ready PDF, and upload it below to send it to our print team.
             </p>
           </Reveal>
 
@@ -259,10 +248,10 @@ function DesignWorkspaceContent() {
 
         {/* Workspace Layout Grid */}
         <div className="grid lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Left Side: 3-Step Design Roadmap (8 cols) */}
           <div className="lg:col-span-8 space-y-6">
-            
+
             {/* Step 1 Card: Select Product & Launch */}
             <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-sm shadow-ink/5 text-left space-y-6">
               <div className="flex items-center gap-3">
@@ -283,7 +272,7 @@ function DesignWorkspaceContent() {
                     onClick={() => {
                       setActiveTemplate(tpl);
                       setFile(null);
-                      setPaymentSuccess(false);
+                      setSubmitSuccess(false);
                     }}
                     className={`p-4 rounded-2xl border text-left transition-all duration-300 flex flex-col gap-1 cursor-pointer ${
                       tpl.id === activeTemplate.id
@@ -354,22 +343,22 @@ function DesignWorkspaceContent() {
                 </div>
                 <div>
                   <h3 className="font-extrabold text-xl text-ink tracking-tight">Download & Upload Back to Us</h3>
-                  <p className="text-xs text-ink-light mt-0.5">Return your design to our production desk to complete the order deposit.</p>
+                  <p className="text-xs text-ink-light mt-0.5">Return your design to our production desk to complete your order.</p>
                 </div>
               </div>
 
               <p className="text-xs text-ink-light leading-relaxed">
-                When you are satisfied with your design, click <strong>Share</strong> in the top-right corner of Canva, select <strong>Download</strong>, and set the File Type to <strong>PDF Print</strong> (this ensures the highest vector resolution). Once downloaded, drag that PDF into the **Submission Desk** on the right!
+                When you are satisfied with your design, click <strong>Share</strong> in the top-right corner of Canva, select <strong>Download</strong>, and set the File Type to <strong>PDF Print</strong> (this ensures the highest vector resolution). Once downloaded, drag that PDF into the <strong>Submission Desk</strong> on the right!
               </p>
             </Reveal>
           </div>
 
-          {/* Right Side: Upload and Checkout Bubble (4 cols) */}
+          {/* Right Side: Upload and Submit (4 cols) */}
           <div className="lg:col-span-4 space-y-6">
-            
+
             {/* Form card container */}
             <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-xl shadow-ink/5 text-left space-y-8 relative overflow-hidden">
-              
+
               <div className="border-b border-border-subtle pb-6">
                 <h3 className="font-extrabold text-xl text-ink tracking-tight">Print Submission Desk</h3>
                 <p className="text-[11px] text-ink-light mt-1">Submit designs to our printing staff.</p>
@@ -393,8 +382,8 @@ function DesignWorkspaceContent() {
                     onDrop={handleDrop}
                     onClick={triggerFileInput}
                     className={`border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${
-                      dragActive 
-                        ? "border-brand-blue bg-brand-blue/5 scale-[0.99]" 
+                      dragActive
+                        ? "border-brand-blue bg-brand-blue/5 scale-[0.99]"
                         : "border-border-medium hover:border-brand-blue/40 bg-paper-cool/30"
                     }`}
                   >
@@ -421,156 +410,140 @@ function DesignWorkspaceContent() {
                           <div className="text-[10px] text-ink-light">{(file.size / 1024 / 1024).toFixed(2)} MB</div>
                         </div>
                       </div>
-                      <button 
-                        onClick={() => setFile(null)} 
+                      <button
+                        type="button"
+                        onClick={() => { setFile(null); setSubmitSuccess(false); }}
                         className="text-[10px] font-semibold text-rose-500 hover:underline px-2 py-1"
-                        disabled={uploading}
+                        disabled={submitting}
                       >
                         Remove
                       </button>
                     </div>
 
-                    {uploading ? (
+                    {submitting ? (
                       <div className="space-y-1">
                         <div className="flex justify-between text-[9px] font-bold text-ink-light">
-                          <span>Uploading...</span>
+                          <span>Submitting...</span>
                           <span>{progress}%</span>
                         </div>
                         <div className="w-full h-1 bg-border-medium rounded-full overflow-hidden">
                           <div className="h-full bg-brand-blue transition-all duration-150" style={{ width: `${progress}%` }} />
                         </div>
                       </div>
+                    ) : submitSuccess ? (
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 text-left">
+                        <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>File Selected & Verified</span>
+                      </div>
                     ) : (
-                      <div className="flex flex-col gap-1.5 border-t border-border-subtle pt-3 text-left">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
-                          <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                          <span>PDF Sent to VinylSupplyMore@gmail.com</span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 mt-1 text-[9px] text-ink-light font-semibold">
-                          <div className="flex items-center gap-1">
-                            <span className="w-1 h-1 rounded-full bg-emerald-500" /> Outlines: Pass
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <span className="w-1 h-1 rounded-full bg-emerald-500" /> DPI Check: Pass
-                          </div>
-                        </div>
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-brand-blue text-left">
+                        <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>PDF Loaded - Ready to Submit</span>
                       </div>
                     )}
                   </div>
                 )}
               </div>
 
-              {/* Step 2: Clover Deposit secure check out */}
+              {/* Step 2: Contact Info Submission Form */}
               <div className="space-y-4 pt-6 border-t border-border-subtle">
                 <div className="flex justify-between items-center">
                   <h4 className="font-bold text-ink text-xs uppercase tracking-wider flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[9px]">2</span>
-                    Pay Deposit via Clover
+                    Contact Info & Submit
                   </h4>
-                  <span className="text-xs font-bold text-brand-blue bg-brand-blue/5 border border-brand-blue/10 px-2 py-0.5 rounded-full">$50.00</span>
                 </div>
 
-                {paymentSuccess ? (
+                {submitSuccess ? (
                   <div className="p-4 bg-emerald-50/50 border border-emerald-200 rounded-2xl flex flex-col items-center text-center space-y-3">
                     <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
                       <CheckCircle className="w-5 h-5" />
                     </div>
-                    <div className="text-left w-full space-y-1.5">
-                      <h4 className="font-bold text-emerald-800 text-xs text-center">Receipt Confirmation</h4>
-                      <div className="bg-white border border-emerald-100 rounded-xl p-3 text-[10px] font-semibold text-ink-light space-y-1 mt-1 shadow-sm">
-                        <div className="flex justify-between">
-                          <span>Merchant ID:</span>
-                          <span className="text-ink">VSM-HOUSTON</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Transaction:</span>
-                          <span className="text-ink">CLV-99374B</span>
-                        </div>
-                        <div className="flex justify-between font-bold text-ink border-t border-border-subtle pt-1 mt-1">
-                          <span>Amount Authorized:</span>
-                          <span>$50.00</span>
-                        </div>
-                      </div>
+                    <div className="text-left w-full space-y-2">
+                      <h4 className="font-bold text-emerald-800 text-xs text-center">Design Submitted Successfully!</h4>
+                      <p className="text-[10px] text-emerald-700 leading-relaxed text-center">
+                        Your print-ready PDF has been sent to our production email. We will review your file specs and text/call you at <span className="font-bold">{phone}</span> to finalize your order details.
+                      </p>
                     </div>
                   </div>
                 ) : (
-                  <form onSubmit={handlePaymentSubmit} className="space-y-4">
-                    
+                  <form onSubmit={handleSubmitDesign} className="space-y-4">
                     <div className="space-y-3">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[10px] font-bold text-ink-light uppercase mb-1 text-left">First Name</label>
+                          <input
+                            type="text"
+                            required
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder="John"
+                            className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[10px] font-bold text-ink-light uppercase mb-1 text-left">Last Name</label>
+                          <input
+                            type="text"
+                            required
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            placeholder="Doe"
+                            className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                          />
+                        </div>
+                      </div>
+
                       <div>
-                        <label className="block text-[10px] font-bold text-ink-light uppercase mb-1">Cardholder Name</label>
+                        <label className="block text-[10px] font-bold text-ink-light uppercase mb-1 text-left">Phone Number</label>
                         <input
                           type="text"
                           required
-                          value={cardName}
-                          onChange={(e) => setCardName(e.target.value)}
-                          placeholder="John Doe"
+                          value={phone}
+                          onChange={handlePhoneChange}
+                          placeholder="(346) 218-0615"
                           className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-[10px] font-bold text-ink-light uppercase mb-1">Card Number</label>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            required
-                            value={cardNumber}
-                            onChange={handleCardNumberChange}
-                            placeholder="4000 1234 5678 9010"
-                            className="w-full pl-9 pr-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                          />
-                          <CreditCard className="w-3.5 h-3.5 text-ink-light/75 absolute left-3 top-1/2 -translate-y-1/2" />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-[10px] font-bold text-ink-light uppercase mb-1">Expiry Date</label>
-                          <input
-                            type="text"
-                            required
-                            value={cardExpiry}
-                            onChange={handleExpiryChange}
-                            placeholder="MM/YY"
-                            className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-bold text-ink-light uppercase mb-1">CVC Code</label>
-                          <input
-                            type="password"
-                            required
-                            value={cardCVC}
-                            onChange={(e) => setCardCVC(e.target.value.replace(/[^0-9]/g, "").substring(0, 4))}
-                            placeholder="•••"
-                            className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                          />
-                        </div>
+                        <label className="block text-[10px] font-bold text-ink-light uppercase mb-1 text-left">Occasion</label>
+                        <select
+                          value={occasion}
+                          onChange={(e) => setOccasion(e.target.value)}
+                          className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                        >
+                          <option value="Personal">Personal</option>
+                          <option value="Wedding">Wedding</option>
+                          <option value="Business / Corporate">Business / Corporate</option>
+                          <option value="Birthday / Party">Birthday / Party</option>
+                          <option value="School / Team Sports">School / Team Sports</option>
+                          <option value="Other">Other</option>
+                        </select>
                       </div>
                     </div>
 
-                    {paymentError && (
+                    {formError && (
                       <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-[10px] font-medium flex items-start gap-1.5 text-left">
                         <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
-                        <span>{paymentError}</span>
+                        <span>{formError}</span>
                       </div>
                     )}
 
                     <button
                       type="submit"
-                      disabled={processing || uploading}
+                      disabled={submitting}
                       className="w-full py-3 bg-brand-blue text-white text-xs font-bold rounded-xl hover:bg-brand-blue/95 transition-all shadow-md shadow-brand-blue/15 hover:shadow-lg flex items-center justify-center gap-1.5 hover:scale-[1.01] duration-300 disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none cursor-pointer"
                     >
-                      {processing ? (
+                      {submitting ? (
                         <>
                           <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Verifying Card...
+                          Submitting Design...
                         </>
                       ) : (
                         <>
-                          <ShieldCheck className="w-3.5 h-3.5" />
-                          Pay Deposit via Clover®
+                          <CheckCircle className="w-3.5 h-3.5" />
+                          Submit Design File
                         </>
                       )}
                     </button>
@@ -585,7 +558,7 @@ function DesignWorkspaceContent() {
               <div className="text-[11px] space-y-1">
                 <h4 className="font-bold text-ink">Need assistance?</h4>
                 <p className="text-ink-light leading-relaxed">
-                  Call our team at **346-218-0615** or email us at **VinylSupplyMore@gmail.com** for manual setup.
+                  Call our team at <strong>346-218-0615</strong> or email us at <strong>VinylSupplyMore@gmail.com</strong> for manual setup.
                 </p>
               </div>
             </Reveal>
