@@ -97,7 +97,7 @@ export const services: Service[] = [
     description:
       "Premium apparel customization. High-resolution vinyl film and custom DTF graphics for shirts and hoodies.",
     tag: "DTF & Heat Press",
-    image: "/apparel-vinyl.jpg",
+    image: "/Back-to-the-90s.jpeg",
     machineImage: "/apparel-vinyl.jpg",
     machineName: "Hotronix Fusion IQ Heat Press & Direct-to-Film System",
     longDescription:
@@ -116,7 +116,7 @@ export const services: Service[] = [
     description:
       "Bulk apparel orders for community clubs, churches, schools, sports teams, and corporate organizations.",
     tag: "Bulk Orders",
-    image: "/org-vinyl.jpg",
+    image: "/company-shirt.jpeg",
     machineImage: "/org-vinyl.jpg",
     machineName: "Stahls' Dual Air Fusion IQ Bulk Production Press",
     longDescription:

@@ -14,7 +14,8 @@ import {
   Phone,
   Layers,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  X
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 
@@ -50,8 +51,12 @@ export default function GalleryPage() {
   const [activePreview, setActivePreview] = useState<string>(projects[0].image);
   const cartRef = useRef<HTMLDivElement>(null);
 
-  // Cart list state (contains selected items)
-  const [cart, setCart] = useState<ProjectItem[]>([projects[0]]);
+  // Cart list state (starts empty)
+  const [cart, setCart] = useState<ProjectItem[]>([]);
+
+  // Lightbox Modal states for pop-out photo viewing
+  const [lightboxProject, setLightboxProject] = useState<ProjectItem | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<string>("");
 
   // Tracks which image is previewed inside each individual card
   const [cardPreviews, setCardPreviews] = useState<Record<string, string>>(() => {
@@ -144,6 +149,30 @@ export default function GalleryPage() {
     }
   };
 
+  const handleLightboxNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!lightboxProject) return;
+    const imagesList = lightboxProject.images || [lightboxProject.image];
+    const currentIndex = imagesList.indexOf(lightboxImage);
+    const nextIndex = (currentIndex + 1) % imagesList.length;
+    setLightboxImage(imagesList[nextIndex]);
+  };
+
+  const handleLightboxPrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!lightboxProject) return;
+    const imagesList = lightboxProject.images || [lightboxProject.image];
+    const currentIndex = imagesList.indexOf(lightboxImage);
+    const prevIndex = (currentIndex - 1 + imagesList.length) % imagesList.length;
+    setLightboxImage(imagesList[prevIndex]);
+  };
+
+  const openLightbox = (e: React.MouseEvent, project: ProjectItem) => {
+    e.stopPropagation();
+    setLightboxProject(project);
+    setLightboxImage(cardPreviews[project.id] || project.image);
+  };
+
   const handleSubmitInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) {
@@ -216,7 +245,7 @@ export default function GalleryPage() {
         {/* Core Layout Split */}
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           
-          {/* Left Side: Showcase Gallery (7 cols) */}
+          {/* Left Side: Showcase Gallery (7 cols) - Reverted to grid-cols-3 */}
           <div className="lg:col-span-7 grid grid-cols-3 gap-2.5 md:gap-6">
             {projects.map((project) => {
               const isSelected = selectedProject.id === project.id;
@@ -225,47 +254,25 @@ export default function GalleryPage() {
                 <div
                   key={project.id}
                   onClick={() => handleSelectProject(project)}
-                  className={`group bg-white rounded-2xl md:rounded-3xl overflow-hidden border shadow-sm cursor-pointer p-2 md:p-4 transition-all duration-300 flex flex-col justify-between ${
+                  className={`bg-white rounded-2xl md:rounded-3xl overflow-hidden border shadow-sm cursor-pointer p-2 md:p-4 transition-all duration-300 flex flex-col justify-between ${
                     isSelected 
                       ? "border-brand-blue ring-2 ring-brand-blue/20 scale-[1.01]" 
                       : "border-border-subtle hover:border-brand-blue/30 hover:shadow-md hover:scale-[1.01]"
                   }`}
                 >
                   <div>
-                    {/* Main Product Card Photo Box with Navigation Arrows */}
-                    <div className="relative aspect-square md:aspect-[16/11] w-full rounded-xl overflow-hidden bg-white border border-border-subtle/30 mb-2 md:mb-4">
+                    {/* Main Product Card Photo Box - Click to pop out modal */}
+                    <div 
+                      onClick={(e) => openLightbox(e, project)} 
+                      className="relative aspect-square md:aspect-[16/11] w-full rounded-xl overflow-hidden bg-white border border-border-subtle/30 mb-2 md:mb-4 cursor-zoom-in group/photo"
+                    >
                       <Image
                         src={activeCardPreview}
                         alt={project.title}
                         fill
-                        sizes="(max-width: 768px) 33vw, 250px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                        sizes="(max-width: 768px) 80vw, 250px"
+                        className="object-cover transition-transform duration-500 group-hover/photo:scale-105"
                       />
-                      <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-white/95 backdrop-blur-sm border border-border-subtle/50 px-1.5 md:px-2.5 py-0.5 rounded-full text-[6px] md:text-[9px] font-bold text-brand-blue uppercase tracking-wider z-10">
-                        {project.category}
-                      </div>
-
-                      {/* Navigation Arrows on Hover/Overlay (only if multiple photos exist) */}
-                      {project.images && project.images.length > 1 && (
-                        <>
-                          <button
-                            type="button"
-                            onClick={(e) => handleCardPrev(e, project)}
-                            className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-7 md:h-7 rounded-full bg-white/90 hover:bg-white border border-border-subtle/50 flex items-center justify-center shadow-md text-ink cursor-pointer z-25 hover:scale-105 transition-transform"
-                            aria-label="Previous image"
-                          >
-                            <ChevronLeft className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={(e) => handleCardNext(e, project)}
-                            className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 w-5 h-5 md:w-7 md:h-7 rounded-full bg-white/90 hover:bg-white border border-border-subtle/50 flex items-center justify-center shadow-md text-ink cursor-pointer z-25 hover:scale-105 transition-transform"
-                            aria-label="Next image"
-                          >
-                            <ChevronRight className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                          </button>
-                        </>
-                      )}
                     </div>
 
                     {/* Multi-Photo Thumbnails directly under the main card photo */}
@@ -296,12 +303,12 @@ export default function GalleryPage() {
 
                     {/* Card text details */}
                     <div className="text-left space-y-1 px-0.5 mb-2 md:mb-4">
-                      <h3 className={`font-extrabold text-[10px] md:text-base leading-tight transition-colors truncate ${
+                      <h3 className={`font-extrabold text-[11px] md:text-base leading-tight transition-colors truncate ${
                         isSelected ? "text-brand-blue" : "text-ink group-hover:text-brand-blue"
                       }`}>
                         {project.title}
                       </h3>
-                      <p className="text-[8px] md:text-xs text-ink-light leading-snug line-clamp-2 md:line-clamp-none">
+                      <p className="text-[9px] md:text-xs text-ink-light leading-snug">
                         {project.description}
                       </p>
                     </div>
@@ -362,7 +369,6 @@ export default function GalleryPage() {
                       <div key={item.id} className="flex items-center justify-between bg-white border border-border-subtle rounded-xl p-3">
                         <div className="text-left min-w-0">
                           <h4 className="font-bold text-xs text-ink truncate">{item.title}</h4>
-                          <span className="text-[9px] text-ink-light uppercase tracking-wider font-semibold">{item.category}</span>
                         </div>
                         <button
                           type="button"
@@ -515,6 +521,58 @@ export default function GalleryPage() {
             <ShoppingCart className="w-4 h-4" />
             View Cart ({cart.length})
           </button>
+        </div>
+      )}
+
+      {/* Pop-out Image Zoom Modal Lightbox */}
+      {lightboxProject && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setLightboxProject(null)}
+        >
+          <button 
+            onClick={() => setLightboxProject(null)}
+            className="absolute top-6 right-6 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all cursor-pointer z-50 border-none"
+            aria-label="Close preview"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <div className="relative max-w-4xl w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center bg-black/40" onClick={(e) => e.stopPropagation()}>
+            <Image
+              src={lightboxImage}
+              alt={lightboxProject.title}
+              fill
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              className="object-contain"
+              priority
+            />
+
+            {/* Modal Navigation Arrows */}
+            {lightboxProject.images && lightboxProject.images.length > 1 && (
+              <>
+                <button
+                  onClick={handleLightboxPrev}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 hover:scale-105 active:scale-95 border border-white/25 flex items-center justify-center text-white cursor-pointer z-40 transition-all"
+                  aria-label="Previous photo"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={handleLightboxNext}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 hover:scale-105 active:scale-95 border border-white/25 flex items-center justify-center text-white cursor-pointer z-40 transition-all"
+                  aria-label="Next photo"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </>
+            )}
+
+            {/* Modal Info Page Overlay */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 text-xs font-semibold text-white/90">
+              {lightboxProject.title} - Angle { (lightboxProject.images?.indexOf(lightboxImage) ?? 0) + 1 } of { lightboxProject.images?.length ?? 1 }
+            </div>
+          </div>
         </div>
       )}
     </section>
