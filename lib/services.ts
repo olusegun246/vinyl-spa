@@ -1,5 +1,10 @@
 import { Flag, Trophy, Grid, Tag, Shirt, Users, type LucideIcon } from "lucide-react";
 
+export interface MachineVideo {
+  title: string;
+  url: string;
+}
+
 export interface Service {
   slug: string;
   Icon: LucideIcon;
@@ -9,6 +14,8 @@ export interface Service {
   image: string;
   machineImage: string;
   machineName: string;
+  machineVideo?: string;
+  machineVideos?: MachineVideo[];
   longDescription: string;
   specifications: string[];
 }
@@ -24,6 +31,10 @@ export const services: Service[] = [
     image: "/hero-vinyl.jpg",
     machineImage: "/hero-vinyl.jpg",
     machineName: "Roland TrueVIS VG3-640 Plotter-Printer",
+    machineVideo: "/Roland-Machine-1.mp4",
+    machineVideos: [
+      { title: "Roland Wide-Format Printer", url: "/Roland-Machine-1.mp4" }
+    ],
     longDescription:
       "Our high-speed banner printing service outputs vibrant prints on 13oz scrim vinyl and premium mesh vinyl substrates. Perfect for building banners, promotional storefront events, and weather-resistant signage.",
     specifications: [
@@ -43,6 +54,12 @@ export const services: Service[] = [
     image: "/merch-vinyl.jpg",
     machineImage: "/merch-vinyl.jpg",
     machineName: "Mutoh ValueJet 626UF Flatbed UV Printer",
+    machineVideo: "/Heat-Press-Machine-Cups (1).mp4",
+    machineVideos: [
+      { title: "Mug Heat Press", url: "/Mugs-Heat-Press-Machine (1).mp4" },
+      { title: "Cup Heat Press", url: "/Heat-Press-Machine-Cups (1).mp4" },
+      { title: "Hat Heat Press", url: "/Hat-Heat-Press-Machine (1).mp4" }
+    ],
     longDescription:
       "Get high-end branded corporate gifts, customized mugs, thermal bottles, notebooks, and promotional accessories. Using advanced flatbed UV-cured inks, we deliver sharp text and logos that will not peel or scratch.",
     specifications: [
@@ -62,6 +79,10 @@ export const services: Service[] = [
     image: "/window-vinyl.jpg",
     machineImage: "/window-vinyl.jpg",
     machineName: "Graphtec FC9000-160 High-Precision Vinyl Cutter",
+    machineVideo: "/Printing-Machine-Hero.mp4",
+    machineVideos: [
+      { title: "Graphtec Vinyl Cutter Plotter", url: "/Printing-Machine-Hero.mp4" }
+    ],
     longDescription:
       "Maximize your storefront presence with premium window graphics. We design perforated window films (displays that allow you to see out but block visibility in), frosted privacy logos, and crisp white vinyl lettering cut to exact contours.",
     specifications: [
@@ -81,6 +102,10 @@ export const services: Service[] = [
     image: "/personal-vinyl.jpg",
     machineImage: "/personal-vinyl.jpg",
     machineName: "Summa S One D140 Contour Vinyl Cutter",
+    machineVideo: "/Printing-Machine-Hero-2.mp4",
+    machineVideos: [
+      { title: "Summa Contour Sticker Cutter", url: "/Printing-Machine-Hero-2.mp4" }
+    ],
     longDescription:
       "Premium die-cut vinyl stickers and gear decals cut exactly to your custom artwork's boundary shape. Protected with waterproof laminates, they endure rain, sunlight, and everyday scratching.",
     specifications: [
@@ -100,6 +125,11 @@ export const services: Service[] = [
     image: "/Back-to-the-90s.jpeg",
     machineImage: "/apparel-vinyl.jpg",
     machineName: "Hotronix Fusion IQ Heat Press & Direct-to-Film System",
+    machineVideo: "/Shirt-Heat-Press-Machine (1).mp4",
+    machineVideos: [
+      { title: "Shirt Heat Press Machine", url: "/Shirt-Heat-Press-Machine (1).mp4" },
+      { title: "DTF Film Printing Press", url: "/DTF-Machine (1).mp4" }
+    ],
     longDescription:
       "Professional custom t-shirt customization. Using state-of-the-art Direct-to-Film (DTF) transfer technology and premium heat-transfer vinyls, we press vibrant, elastic, and washproof graphics onto hoodies, tees, and sportswear.",
     specifications: [
@@ -119,6 +149,11 @@ export const services: Service[] = [
     image: "/company-shirt.jpeg",
     machineImage: "/org-vinyl.jpg",
     machineName: "Stahls' Dual Air Fusion IQ Bulk Production Press",
+    machineVideo: "/DTF-Machine (1).mp4",
+    machineVideos: [
+      { title: "Bulk DTF Fabric Press", url: "/DTF-Machine (1).mp4" },
+      { title: "Shirt Heat Press Machine", url: "/Shirt-Heat-Press-Machine (1).mp4" }
+    ],
     longDescription:
       "Cost-effective bulk custom apparel printing for community clubs, schools, church retreats, corporate workforces, and non-profits. We specialize in fast turnarounds for high-volume orders with crisp logo alignment.",
     specifications: [

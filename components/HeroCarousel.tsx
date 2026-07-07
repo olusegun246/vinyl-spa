@@ -87,21 +87,23 @@ export default function HeroCarousel() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleNext, handlePrev]);
 
-  // Auto-play cycling
+  // Auto-play cycling (set to 5s)
   useEffect(() => {
     if (paused) return;
-    const interval = setInterval(handleNext, 7000);
+    const interval = setInterval(handleNext, 5000);
     return () => clearInterval(interval);
   }, [paused, handleNext]);
 
   return (
     <div
-      className="relative w-full bg-white border-b border-border-subtle shadow-sm z-20 overflow-hidden group h-[100px] md:h-[80px] flex flex-col justify-center"
+      className="relative w-full bg-white border-b border-border-subtle shadow-md shadow-ink/5 z-20 overflow-hidden group h-[100px] md:h-[80px] flex flex-col justify-center"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
       aria-label="Service Categories Showcase"
     >
+
+
       {/* Blue radial glow, top-right corner */}
       <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-blue/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/4" />
 
@@ -118,7 +120,11 @@ export default function HeroCarousel() {
         >
           {/* Image thumbnail */}
           <div className="flex-shrink-0">
-            <div className="relative w-11 h-11 md:w-12 md:h-12 rounded-full overflow-hidden border border-border-subtle bg-paper-cool shadow-sm">
+            <div className={`relative w-11 h-11 md:w-12 md:h-12 rounded-full overflow-hidden border bg-paper-cool transition-all duration-300 shadow-sm ${
+              idx === current 
+                ? "border-brand-blue ring-2 ring-brand-blue/35 ring-offset-1 shadow-[0_0_12px_rgba(59,130,246,0.45)] scale-[1.03]" 
+                : "border-border-subtle hover:border-brand-blue/30"
+            }`}>
               <Image
                 src={slide.image}
                 alt={slide.title}
@@ -133,11 +139,7 @@ export default function HeroCarousel() {
           {/* Text */}
           <div className="flex flex-col items-start text-left min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2 mb-0.5">
-              <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-blue/5 border border-brand-blue/10 rounded-full text-[9px] font-bold text-brand-blue uppercase tracking-wider">
-                <span className="w-1 h-1 rounded-full bg-brand-blue animate-pulse" />
-                {slide.category}
-              </div>
-              <h2 className="text-sm md:text-base font-bold text-ink leading-none truncate">
+              <h2 className="text-sm md:text-base font-extrabold bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent leading-none truncate pb-0.5">
                 {slide.title}
               </h2>
             </div>
@@ -177,27 +179,19 @@ export default function HeroCarousel() {
       </button>
 
       {/* Progress Indicators */}
-      <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+      <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-30 flex gap-2">
         {slides.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrent(idx)}
-            className="group/dot relative h-1 rounded-full overflow-hidden transition-all duration-300 cursor-pointer"
-            style={{ width: idx === current ? "24px" : "8px" }}
+            className={`h-1 rounded-full transition-all duration-300 cursor-pointer border-none ${
+              idx === current 
+                ? "w-6 bg-brand-blue" 
+                : "w-2 bg-border-medium hover:bg-ink-light"
+            }`}
             aria-label={`Go to slide ${idx + 1}`}
             aria-current={idx === current ? "true" : undefined}
-          >
-            <span className="absolute inset-0 bg-border-medium group-hover/dot:bg-ink-muted rounded-full" />
-            <span
-              className={`absolute top-0 left-0 h-full bg-brand-blue rounded-full transition-all ${
-                idx === current ? "w-full" : "w-0"
-              }`}
-              style={{
-                transitionDuration: idx === current && !paused ? "7000ms" : "300ms",
-                transitionTimingFunction: "linear",
-              }}
-            />
-          </button>
+          />
         ))}
       </div>
     </div>

@@ -207,7 +207,7 @@ function DesignWorkspaceContent() {
   };
 
   return (
-    <section className="py-16 md:py-24 px-6 lg:px-12 bg-gradient-to-b from-[#f1f5f9] via-[#e2e8f0] to-[#f1f5f9] min-h-screen grid-bg relative overflow-hidden">
+    <section className="pt-10 pb-16 md:pt-12 md:pb-24 px-6 lg:px-12 bg-gradient-to-b from-[#f1f5f9] via-[#e2e8f0] to-[#f1f5f9] min-h-screen grid-bg relative overflow-hidden">
       {/* Top Header Ambient radial glows */}
       <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[140px] pointer-events-none -translate-y-1/2 -translate-x-1/4" />
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-cyan/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
@@ -219,156 +219,124 @@ function DesignWorkspaceContent() {
 
       <div className="max-w-7xl mx-auto relative z-10">
 
-        {/* Page Header Split Hero Section */}
-        <div className="grid lg:grid-cols-12 gap-12 items-center mb-16">
-          <Reveal className="lg:col-span-7 text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-4 text-black leading-none">
-              Design Your Own <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">Prints</span>
-            </h1>
-            <p className="text-base md:text-lg text-black leading-relaxed">
-              Select a template dimension, design online using Canva, download your print-ready PDF, and upload it below to send it to our print team.
-            </p>
-          </Reveal>
+        {/* 2-Column Split Workspace Layout Grid */}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-          {/* Autoplay Printing Production Video */}
-          <Reveal delay={0.15} className="lg:col-span-5 w-full">
-            <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-slate-950">
-              <video
-                src="/Printing-Machine-Hero-3.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-            </div>
-          </Reveal>
-        </div>
+          {/* Left Side: Heading, Steps, Video Player (7 cols) */}
+          <div className="lg:col-span-7 space-y-5 text-left">
+            <Reveal className="space-y-2">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black leading-none">
+                Design Your Own <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">Prints</span>
+              </h1>
+              <p className="text-sm md:text-base text-ink-light leading-relaxed">
+                Design online using Canva, or skip the builder and upload **any print-ready PDF** you already have to send it directly to our printing staff.
+              </p>
+            </Reveal>
 
-        {/* Workspace Layout Grid */}
-        <div className="grid lg:grid-cols-12 gap-8 items-start">
-
-          {/* Left Side: 3-Step Design Roadmap (8 cols) */}
-          <div className="lg:col-span-8 space-y-6">
-
-            {/* Step 1 Card: Select Product & Launch */}
-            <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-sm shadow-ink/5 text-left space-y-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-black text-sm shadow-md shadow-brand-blue/20">
+            {/* Horizontal 2-Step Design Roadmap inside the left side */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              {/* Step 1 Card: Design Your Artwork */}
+              <Reveal className="bg-white border border-border-subtle rounded-2xl p-5 shadow-sm shadow-ink/5 flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-md shadow-brand-blue/15 animate-pulse">
                   01
                 </div>
-                <div>
-                  <h3 className="font-extrabold text-xl text-ink tracking-tight">Select Product & Launch Canva</h3>
-                  <p className="text-xs text-ink-light mt-0.5">Choose your product type to open Canva with the correct dimensions preset.</p>
+                <div className="space-y-1">
+                  <h3 className="font-extrabold text-sm text-ink tracking-tight">Design online</h3>
+                  <p className="text-[11px] text-ink-light leading-relaxed">
+                    Select your product category, launch Canva, and create your custom artwork using free layout templates.
+                  </p>
                 </div>
-              </div>
+              </Reveal>
 
-              {/* Sizing Grid Selection */}
-              <div className="grid sm:grid-cols-2 gap-3 pt-2">
-                {templates.map((tpl) => (
-                  <button
-                    key={tpl.id}
-                    onClick={() => {
-                      setActiveTemplate(tpl);
-                      setFile(null);
-                      setSubmitSuccess(false);
-                    }}
-                    className={`p-4 rounded-2xl border text-left transition-all duration-300 flex flex-col gap-1 cursor-pointer ${
-                      tpl.id === activeTemplate.id
-                        ? "bg-brand-blue/5 border-brand-blue ring-1 ring-brand-blue"
-                        : "bg-white border-border-subtle hover:border-brand-blue/40"
-                    }`}
-                  >
-                    <span className={`text-sm font-bold ${tpl.id === activeTemplate.id ? "text-brand-blue" : "text-ink"}`}>
-                      {tpl.name}
-                    </span>
-                    <span className="text-[10px] font-semibold text-ink-light">
-                      {tpl.specs}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Action Launch Button */}
-              <div className="pt-4 border-t border-border-subtle flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="text-[11px] font-semibold text-ink-light">
-                  Selected preset size: <strong className="text-brand-blue">{activeTemplate.specs}</strong>
-                </div>
-                <a
-                  href={activeTemplate.externalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-blue text-white font-bold rounded-xl hover:bg-brand-blue/95 transition-all shadow-md shadow-brand-blue/15 hover:scale-[1.02] duration-300 text-xs uppercase tracking-wider cursor-pointer"
-                >
-                  Launch {activeTemplate.name} Creator
-                  <FileDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
-                </a>
-              </div>
-            </Reveal>
-
-            {/* Step 2 Card: Design Your Artwork */}
-            <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-sm shadow-ink/5 text-left space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-black text-sm shadow-md shadow-brand-blue/20">
+              {/* Step 2 Card: Export & Return */}
+              <Reveal className="bg-white border border-border-subtle rounded-2xl p-5 shadow-sm shadow-ink/5 flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-brand-cyan text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-md shadow-brand-cyan/15">
                   02
                 </div>
-                <div>
-                  <h3 className="font-extrabold text-xl text-ink tracking-tight">Design in Canva</h3>
-                  <p className="text-xs text-ink-light mt-0.5">Use Canva&apos;s free drag-and-drop workspace in the new tab to create your artwork.</p>
+                <div className="space-y-1">
+                  <h3 className="font-extrabold text-sm text-ink tracking-tight">Submit Any PDF</h3>
+                  <p className="text-[11px] text-ink-light leading-relaxed">
+                    Upload your exported Canva design, or any print-ready PDF from Photoshop, Illustrator, or another program below.
+                  </p>
                 </div>
-              </div>
+              </Reveal>
+            </div>
 
-              <div className="bg-paper-cool/50 rounded-2xl p-5 border border-border-subtle text-xs font-semibold text-ink-light space-y-3">
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-blue mt-1.5 flex-shrink-0" />
-                  <span><strong>Customize Elements:</strong> Add high-resolution photos, upload your own store logo files, or choose from thousands of free Canva design vectors.</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-blue mt-1.5 flex-shrink-0" />
-                  <span><strong>Safety Margins:</strong> Keep all critical text, titles, and logos centered within the margins to prevent clipping during border trims.</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-blue mt-1.5 flex-shrink-0" />
-                  <span><strong>No Account Needed:</strong> Canva lets you design fully as a guest or standard account for free. No premium Canva subscription is required.</span>
-                </div>
+            {/* Autoplay Printing Production Video */}
+            <Reveal delay={0.15} className="w-full">
+              <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-slate-950">
+                <video
+                  src="/Printing-Machine-Hero-3.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
               </div>
-            </Reveal>
-
-            {/* Step 3 Card: Export & Return */}
-            <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-sm shadow-ink/5 text-left space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-cyan text-white flex items-center justify-center font-black text-sm shadow-md shadow-brand-cyan/20">
-                  03
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-xl text-ink tracking-tight">Download & Upload Back to Us</h3>
-                  <p className="text-xs text-ink-light mt-0.5">Return your design to our production desk to complete your order.</p>
-                </div>
-              </div>
-
-              <p className="text-xs text-ink-light leading-relaxed">
-                When you are satisfied with your design, click <strong>Share</strong> in the top-right corner of Canva, select <strong>Download</strong>, and set the File Type to <strong>PDF Print</strong> (this ensures the highest vector resolution). Once downloaded, drag that PDF into the <strong>Submission Desk</strong> on the right!
-              </p>
             </Reveal>
           </div>
 
-          {/* Right Side: Upload and Submit (4 cols) */}
-          <div className="lg:col-span-4 space-y-6">
-
+          {/* Right Side: Upload and Submit (5 cols) */}
+          <div className="lg:col-span-5 space-y-6">
             {/* Form card container */}
             <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-xl shadow-ink/5 text-left space-y-8 relative overflow-hidden">
-
               <div className="border-b border-border-subtle pb-6">
                 <h3 className="font-extrabold text-xl text-ink tracking-tight">Print Submission Desk</h3>
                 <p className="text-[11px] text-ink-light mt-1">Submit designs to our printing staff.</p>
               </div>
 
-              {/* Step 1: Drag & Drop PDF */}
+              {/* Step 1: Choose Product & Design */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h4 className="font-bold text-ink text-xs uppercase tracking-wider flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[9px]">1</span>
+                    Choose Product & Design
+                  </h4>
+                  <span className="text-[9px] font-semibold text-ink-light uppercase">Required</span>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-[9px] font-bold text-ink-light uppercase mb-1.5 text-left">Service Category</label>
+                    <select
+                      value={activeTemplate.id}
+                      onChange={(e) => {
+                        const match = templates.find((t) => t.id === e.target.value);
+                        if (match) {
+                          setActiveTemplate(match);
+                          setFile(null);
+                          setSubmitSuccess(false);
+                        }
+                      }}
+                      className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                    >
+                      {templates.map((tpl) => (
+                        <option key={tpl.id} value={tpl.id}>{tpl.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="pt-1">
+                    <a
+                      href={activeTemplate.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-brand-blue text-white font-bold rounded-xl hover:bg-brand-blue/95 transition-all shadow-md shadow-brand-blue/15 hover:scale-[1.01] duration-300 text-xs uppercase tracking-wider cursor-pointer border-none"
+                    >
+                      Launch Design {activeTemplate.name} on Canva
+                      <FileDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2: Drag & Drop PDF */}
+              <div className="space-y-4 pt-6 border-t border-border-subtle">
+                <div className="flex justify-between items-center">
+                  <h4 className="font-bold text-ink text-xs uppercase tracking-wider flex items-center gap-2">
+                    <span className="w-4 h-4 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[9px]">2</span>
                     Upload PDF Design
                   </h4>
                   <span className="text-[9px] font-semibold text-ink-light uppercase">Required</span>
@@ -445,11 +413,11 @@ function DesignWorkspaceContent() {
                 )}
               </div>
 
-              {/* Step 2: Contact Info Submission Form */}
+              {/* Step 3: Contact Info Submission Form */}
               <div className="space-y-4 pt-6 border-t border-border-subtle">
                 <div className="flex justify-between items-center">
                   <h4 className="font-bold text-ink text-xs uppercase tracking-wider flex items-center gap-2">
-                    <span className="w-4 h-4 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[9px]">2</span>
+                    <span className="w-4 h-4 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[9px]">3</span>
                     Contact Info & Submit
                   </h4>
                 </div>

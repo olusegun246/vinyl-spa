@@ -216,23 +216,61 @@ export default function ServiceDetailPage() {
             
             {/* Machine Card */}
             <Reveal className="bg-white border border-border-subtle rounded-3xl overflow-hidden shadow-sm shadow-ink/5">
-              <div className="relative aspect-[16/9] w-full">
-                <Image
-                  src={service.machineImage}
-                  alt={service.machineName}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 700px"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-left text-white">
-                  <div className="flex items-center gap-2 text-brand-cyan text-xs font-semibold uppercase tracking-wider mb-1">
-                    <Printer className="w-3.5 h-3.5" />
-                    Production Machinery
+              {service.machineVideos && service.machineVideos.length > 1 ? (
+                <div className="p-6 md:p-8 space-y-6">
+                  <div className="flex items-center gap-2 text-brand-blue text-xs font-bold uppercase tracking-wider">
+                    <Printer className="w-4 h-4 text-brand-blue" />
+                    Production Machinery Processes
                   </div>
-                  <h3 className="text-lg md:text-xl font-bold tracking-tight">{service.machineName}</h3>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {service.machineVideos.map((video) => (
+                      <div key={video.title} className="space-y-2 text-left">
+                        <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 border border-border-subtle/50">
+                          <video
+                            src={video.url}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                        </div>
+                        <span className="text-[10px] font-bold text-ink block px-1 tracking-tight uppercase">{video.title}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="relative aspect-[16/9] w-full bg-slate-950">
+                  {service.machineVideo ? (
+                    <video
+                      src={service.machineVideo}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover absolute inset-0"
+                    />
+                  ) : (
+                    <Image
+                      src={service.machineImage}
+                      alt={service.machineName}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 700px"
+                      className="object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-6 left-6 right-6 text-left text-white z-10">
+                    <div className="flex items-center gap-2 text-brand-cyan text-xs font-semibold uppercase tracking-wider mb-1">
+                      <Printer className="w-3.5 h-3.5" />
+                      Production Machinery
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold tracking-tight">{service.machineName}</h3>
+                  </div>
+                </div>
+              )}
               <div className="p-6 md:p-8 bg-white border-t border-border-subtle">
                 <h4 className="font-bold text-ink mb-2">Print Quality & Specs</h4>
                 <p className="text-sm text-ink-light leading-relaxed">

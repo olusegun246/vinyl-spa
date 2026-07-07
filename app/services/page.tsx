@@ -53,35 +53,51 @@ export default function ServicesPage() {
 
         {/* Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map(({ Icon, title, description, tag, slug }) => (
+          {services.map(({ Icon, title, description, tag, slug, machineVideo }) => (
             <div
               key={title}
-              className="group/card bg-white border border-border-subtle rounded-3xl p-8 hover:shadow-xl hover:shadow-ink/5 hover:border-brand-blue/20 transition-all duration-300 flex flex-col items-start text-left relative overflow-hidden"
+              className="group/card bg-white border border-border-subtle rounded-3xl p-6 hover:shadow-xl hover:shadow-ink/5 hover:border-brand-blue/20 transition-all duration-300 flex flex-col items-start text-left relative overflow-hidden"
             >
-              {/* Category Tag overlay in top-right */}
-              <div className="absolute top-8 right-8 inline-flex items-center px-2.5 py-0.5 bg-brand-blue/5 border border-brand-blue/10 rounded-full text-[9px] font-bold text-brand-blue uppercase tracking-wider">
-                {tag}
-              </div>
-
-              {/* Symbol Container (Icon) */}
-              <div className="w-14 h-14 bg-gradient-to-tr from-brand-blue/5 to-brand-cyan/5 border border-brand-blue/10 rounded-2xl flex items-center justify-center mb-6 group-hover/card:from-brand-blue group-hover/card:to-brand-cyan group-hover/card:text-white group-hover/card:border-transparent group-hover/card:shadow-md group-hover/card:shadow-brand-blue/10 transition-all duration-300">
-                <Icon className="w-7 h-7 text-brand-blue group-hover/card:text-white group-hover/card:scale-110 transition-all duration-300" />
+              {/* Media Container with Autoplay Video */}
+              <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-950 mb-5 border border-border-subtle/50 shadow-inner">
+                {machineVideo ? (
+                  <video
+                    src={machineVideo}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-slate-900 flex items-center justify-center text-white/50 text-[10px]">
+                    No Video Preview
+                  </div>
+                )}
+                {/* Category Tag overlay on top-right */}
+                <div className="absolute top-3 right-3 inline-flex items-center px-2.5 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-[8px] font-bold text-brand-cyan uppercase tracking-widest">
+                  {tag}
+                </div>
+                {/* Symbol Container overlay on bottom-left */}
+                <div className="absolute bottom-3 left-3 w-9 h-9 bg-white/95 backdrop-blur-sm border border-border-subtle/30 rounded-xl flex items-center justify-center shadow-md">
+                  <Icon className="w-5 h-5 text-brand-blue" />
+                </div>
               </div>
 
               {/* Title & Description */}
-              <h2 className="text-xl font-bold mb-3 text-ink group-hover/card:text-brand-blue transition-colors duration-300">
+              <h2 className="text-lg font-extrabold mb-2.5 text-ink group-hover/card:text-brand-blue transition-colors duration-300 tracking-tight">
                 {title}
               </h2>
               
-              <p className="text-ink-light text-sm leading-relaxed mb-6 flex-1">{description}</p>
+              <p className="text-ink-light text-[12px] leading-relaxed mb-5 flex-1">{description}</p>
               
               {/* View Details Link */}
               <Link
                 href={`/services/${slug}`}
-                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-brand-blue hover:text-brand-blue/80 transition-colors"
+                className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-blue hover:text-brand-blue/80 transition-colors"
               >
-                <span>View Service Details</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover/card:translate-x-1 transition-transform animate-in fade-in" />
+                <span>View Process & Specs</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover/card:translate-x-1 transition-transform" />
               </Link>
             </div>
           ))}
