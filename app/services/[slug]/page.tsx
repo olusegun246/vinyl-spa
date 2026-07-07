@@ -321,7 +321,7 @@ export default function ServiceDetailPage() {
                     }`}
                     className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-paper-cool border border-border-subtle text-xs font-extrabold text-ink hover:text-brand-blue hover:bg-brand-blue/5 rounded-xl transition-all uppercase tracking-wider"
                   >
-                    Design Online with Canva
+                    Design Online (Template.io)
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>

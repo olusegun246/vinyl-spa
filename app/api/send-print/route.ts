@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     await transporter.sendMail({
       from: `"Vinyl Supply & More Site" <${user}>`,
       to: "vinylsubmissions@gmail.com",
-      subject: `New Canva Design Submission: ${firstName} ${lastName} - ${serviceTitle}`,
+      subject: `New Template.io Design Submission: ${firstName} ${lastName} - ${serviceTitle}`,
       text: `A new print-ready PDF design has been submitted through the website.
 
 Customer Contact Details:
