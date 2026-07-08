@@ -10,6 +10,7 @@ export async function POST(request: Request) {
     const firstName = (formData.get("firstName") as string) || "";
     const lastName = (formData.get("lastName") as string) || "";
     const phone = (formData.get("phone") as string) || "";
+    const email = (formData.get("email") as string) || "";
     const occasion = (formData.get("occasion") as string) || "Personal";
 
     if (!file) {
@@ -53,6 +54,7 @@ Customer Contact Details:
 -------------------------
 Name: ${firstName} ${lastName}
 Phone: ${phone}
+Email: ${email}
 Occasion: ${occasion}
 
 Print Specs Selected:

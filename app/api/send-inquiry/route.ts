@@ -7,11 +7,12 @@ export async function POST(request: Request) {
     const firstName = (formData.get("firstName") as string) || "";
     const lastName = (formData.get("lastName") as string) || "";
     const phone = (formData.get("phone") as string) || "";
+    const email = (formData.get("email") as string) || "";
     const occasion = (formData.get("occasion") as string) || "Personal";
     const projectTitle = (formData.get("projectTitle") as string) || "Unknown Project";
     const description = (formData.get("description") as string) || "";
 
-    if (!firstName || !lastName || !phone) {
+    if (!firstName || !lastName || !phone || !email) {
       return NextResponse.json({ error: "Contact fields are required." }, { status: 400 });
     }
 
@@ -43,6 +44,7 @@ Customer Contact Details:
 -------------------------
 Name: ${firstName} ${lastName}
 Phone: ${phone}
+Email: ${email}
 Occasion: ${occasion}
 
 Inquired Project:

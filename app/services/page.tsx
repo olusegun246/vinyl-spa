@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Reveal from "@/components/Reveal";
-import { services, processSteps } from "@/lib/services";
+import { services } from "@/lib/services";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -74,10 +74,7 @@ export default function ServicesPage() {
                     No Video Preview
                   </div>
                 )}
-                {/* Category Tag overlay on top-right */}
-                <div className="absolute top-3 right-3 inline-flex items-center px-2.5 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-[8px] font-bold text-brand-cyan uppercase tracking-widest">
-                  {tag}
-                </div>
+
                 {/* Symbol Container overlay on bottom-left */}
                 <div className="absolute bottom-3 left-3 w-9 h-9 bg-white/95 backdrop-blur-sm border border-border-subtle/30 rounded-xl flex items-center justify-center shadow-md">
                   <Icon className="w-5 h-5 text-brand-blue" />
@@ -103,34 +100,6 @@ export default function ServicesPage() {
           ))}
         </div>
 
-        {/* Process Timeline */}
-        <div className="mt-32">
-          <Reveal className="text-center max-w-2xl mx-auto mb-20">
-            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-black leading-tight">
-              Our Simple <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">Process</span>
-            </h2>
-          </Reveal>
-
-          {/* Workflow Cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-            {processSteps.map(({ step, title, text }, i) => (
-              <Reveal key={step} delay={i * 0.1} className="relative bg-white rounded-3xl p-8 border border-border-subtle shadow-sm hover:shadow-md transition-all duration-300">
-                {/* Connecting track (hidden on mobile, visible on desktop between steps) */}
-                {i < 3 && (
-                  <div className="hidden lg:block absolute top-[52px] left-[100px] w-full h-[2px] bg-border-subtle -z-10" />
-                )}
-                
-                {/* Step Circle indicator */}
-                <div className="w-12 h-12 mb-6 rounded-2xl bg-gradient-to-tr from-brand-blue to-brand-cyan flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-brand-blue/20">
-                  {step}
-                </div>
-                <h3 className="font-bold text-lg mb-2 text-ink">{title}</h3>
-                <p className="text-sm text-ink-light leading-relaxed">{text}</p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-
         {/* Footer Custom CTA Block */}
         <Reveal delay={0.2} className="mt-32">
           <div className="bg-gradient-to-r from-[#0d1326] via-[#090d16] to-[#0d1326] rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden border border-white/10 shadow-xl shadow-ink/10">
@@ -143,17 +112,17 @@ export default function ServicesPage() {
                 Custom Orders welcome
               </span>
               <h2 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight">
-                Have a Custom Print Project?
+                Ready to Design Your Prints?
               </h2>
               <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-xl">
-                We accommodate bulk orders, specialized dimensions, and custom decals tailored exactly to your brand specs. Get a responsive estimate.
+                Use our interactive Template.io online editor to build your designs directly on our site, or drag-and-drop any print-ready PDF file you already have.
               </p>
               <div className="pt-4">
                 <Link
-                  href="/contact"
+                  href="/design"
                   className="group inline-flex items-center gap-2 px-8 py-4 bg-brand-blue text-white font-semibold rounded-full hover:bg-brand-blue/95 transition-all shadow-lg shadow-brand-blue/30 hover:scale-105 duration-300"
                 >
-                  Request a Quote
+                  Start Designing Online
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

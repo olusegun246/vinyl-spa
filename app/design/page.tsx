@@ -85,6 +85,7 @@ function DesignWorkspaceContent() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [occasion, setOccasion] = useState("Personal");
   const [formError, setFormError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -144,7 +145,7 @@ function DesignWorkspaceContent() {
 
   const handleSubmitDesign = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firstName.trim() || !lastName.trim() || !phone.trim()) {
+    if (!firstName.trim() || !lastName.trim() || !phone.trim() || !email.trim()) {
       setFormError("Please fill out all contact info fields.");
       return;
     }
@@ -175,6 +176,7 @@ function DesignWorkspaceContent() {
       formData.append("firstName", firstName);
       formData.append("lastName", lastName);
       formData.append("phone", phone);
+      formData.append("email", email);
       formData.append("occasion", occasion);
 
       const res = await fetch("/api/send-print", {
@@ -472,6 +474,18 @@ function DesignWorkspaceContent() {
                           value={phone}
                           onChange={handlePhoneChange}
                           placeholder="(346) 218-0615"
+                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-blue/50 transition-colors"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[9px] font-bold text-slate-400 uppercase mb-1 text-left">Email Address</label>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="john.doe@example.com"
                           className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-blue/50 transition-colors"
                         />
                       </div>

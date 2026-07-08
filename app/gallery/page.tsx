@@ -30,17 +30,16 @@ interface ProjectItem {
 
 const projects: ProjectItem[] = [
   {
-    id: "bambi-cup",
-    title: "Bambi Custom Tumbler",
-    category: "Custom Merchandise",
-    description: "Personalized full-wrap custom insulated steel tumbler cup featuring a rich custom illustration.",
-    image: "/Bambi-1.jpeg",
-    images: ["/Bambi-1.jpeg", "/Bambi-2.jpeg", "/Bambi-3.jpeg"]
+    id: "ten-commandments-banner",
+    title: "Ten Commandments Banner",
+    category: "Banner",
+    description: "Large custom printed outdoor church vinyl banner with high-contrast scripture text.",
+    image: "/Ten-Commandments-Banner.jpeg"
   },
   {
     id: "back-to-90s",
     title: "Back to the 90s Shirt",
-    category: "Apparel Printing",
+    category: "Heat Press",
     description: "Retro neon brand aesthetic print applied to a premium black cotton shirt.",
     image: "/Back-to-the-90s.jpeg"
   }
@@ -71,6 +70,7 @@ export default function GalleryPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [occasion, setOccasion] = useState("Personal");
   const [description, setDescription] = useState("");
   const [formError, setFormError] = useState("");
@@ -94,6 +94,8 @@ export default function GalleryPage() {
     setActivePreview(currentCardPreview);
     setSubmitSuccess(false);
     setFormError("");
+    setLightboxProject(project);
+    setLightboxImage(currentCardPreview);
   };
 
   const handleToggleCart = (e: React.MouseEvent, project: ProjectItem) => {
@@ -179,7 +181,7 @@ export default function GalleryPage() {
       setFormError("Please add at least one project to your cart.");
       return;
     }
-    if (!firstName.trim() || !lastName.trim() || !phone.trim()) {
+    if (!firstName.trim() || !lastName.trim() || !phone.trim() || !email.trim()) {
       setFormError("Please fill out all contact info fields.");
       return;
     }
@@ -194,6 +196,7 @@ export default function GalleryPage() {
       formData.append("firstName", firstName);
       formData.append("lastName", lastName);
       formData.append("phone", phone);
+      formData.append("email", email);
       formData.append("occasion", occasion);
       formData.append("description", description);
 
@@ -261,10 +264,9 @@ export default function GalleryPage() {
                   }`}
                 >
                   <div>
-                    {/* Main Product Card Photo Box - Click to pop out modal */}
+                    {/* Main Product Card Photo Box */}
                     <div 
-                      onClick={(e) => openLightbox(e, project)} 
-                      className="relative aspect-square md:aspect-[16/11] w-full rounded-xl overflow-hidden bg-white border border-border-subtle/30 mb-2 md:mb-4 cursor-zoom-in group/photo"
+                      className="relative aspect-square md:aspect-[16/11] w-full rounded-xl overflow-hidden bg-white border border-border-subtle/30 mb-2 md:mb-4 group/photo"
                     >
                       <Image
                         src={activeCardPreview}
@@ -302,15 +304,20 @@ export default function GalleryPage() {
                     )}
 
                     {/* Card text details */}
-                    <div className="text-left space-y-1 px-0.5 mb-2 md:mb-4">
-                      <h3 className={`font-extrabold text-[11px] md:text-base leading-tight transition-colors truncate ${
-                        isSelected ? "text-brand-blue" : "text-ink group-hover:text-brand-blue"
-                      }`}>
-                        {project.title}
-                      </h3>
-                      <p className="text-[9px] md:text-xs text-ink-light leading-snug">
-                        {project.description}
-                      </p>
+                    <div className="text-left space-y-1.5 px-0.5 mb-2 md:mb-4">
+                      <div className="flex flex-col gap-1">
+                        <h3 className={`font-extrabold text-[11px] md:text-sm leading-tight transition-colors ${
+                          isSelected ? "text-brand-blue" : "text-ink group-hover:text-brand-blue"
+                        }`}>
+                          {project.title}
+                        </h3>
+                        {/* Category Badge on small version */}
+                        <div className="flex">
+                          <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded-full text-[7px] md:text-[9px] font-bold text-slate-650 uppercase tracking-wider">
+                            {project.category}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -427,7 +434,7 @@ export default function GalleryPage() {
                       </div>
                     </div>
 
-                    <div>
+                     <div>
                       <label className="block text-[11px] font-bold text-ink-light uppercase mb-1">Phone Number</label>
                       <input
                         type="text"
@@ -435,6 +442,18 @@ export default function GalleryPage() {
                         value={phone}
                         onChange={handlePhoneChange}
                         placeholder="(346) 218-0615"
+                        className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] font-bold text-ink-light uppercase mb-1">Email Address</label>
+                      <input
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="john.doe@example.com"
                         className="w-full px-4 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
                       />
                     </div>
@@ -524,57 +543,106 @@ export default function GalleryPage() {
         </div>
       )}
 
-      {/* Pop-out Image Zoom Modal Lightbox */}
+
+      {/* Pop-out Image & Details Card Modal */}
       {lightboxProject && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
           onClick={() => setLightboxProject(null)}
         >
-          <button 
-            onClick={() => setLightboxProject(null)}
-            className="absolute top-6 right-6 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all cursor-pointer z-50 border-none"
-            aria-label="Close preview"
+          {/* Main expanded card pop-out (Vertical Stack Layout) */}
+          <div 
+            className="relative max-w-md w-full bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200 flex flex-col text-left animate-in zoom-in-95 duration-250"
+            onClick={(e) => e.stopPropagation()}
           >
-            <X className="w-6 h-6" />
-          </button>
+            {/* Close Button on top-right of modal card */}
+            <button 
+              onClick={() => setLightboxProject(null)}
+              className="absolute top-4 right-4 text-white hover:text-slate-200 bg-black/45 hover:bg-black/60 p-2 rounded-full transition-all cursor-pointer z-50 border-none flex items-center justify-center shadow-sm"
+              aria-label="Close details"
+            >
+              <X className="w-4 h-4" />
+            </button>
 
-          <div className="relative max-w-4xl w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl flex items-center justify-center bg-black/40" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={lightboxImage}
-              alt={lightboxProject.title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 1024px"
-              className="object-contain"
-              priority
-            />
+            {/* Top Photo Panel (Fills width) */}
+            <div className="relative w-full aspect-[4/3] bg-slate-50 border-b border-slate-100">
+              <Image
+                src={lightboxImage}
+                alt={lightboxProject.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 450px"
+                className="object-cover"
+                priority
+              />
 
-            {/* Modal Navigation Arrows */}
-            {lightboxProject.images && lightboxProject.images.length > 1 && (
-              <>
-                <button
-                  onClick={handleLightboxPrev}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 hover:scale-105 active:scale-95 border border-white/25 flex items-center justify-center text-white cursor-pointer z-40 transition-all"
-                  aria-label="Previous photo"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-                <button
-                  onClick={handleLightboxNext}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 hover:scale-105 active:scale-95 border border-white/25 flex items-center justify-center text-white cursor-pointer z-40 transition-all"
-                  aria-label="Next photo"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </>
-            )}
+              {/* Modal Navigation Arrows for multiple photos */}
+              {lightboxProject.images && lightboxProject.images.length > 1 && (
+                <>
+                  <button
+                    onClick={handleLightboxPrev}
+                    className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/35 hover:bg-black/55 border border-white/20 flex items-center justify-center text-white cursor-pointer z-40 transition-all"
+                    aria-label="Previous photo"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleLightboxNext}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/35 hover:bg-black/55 border border-white/20 flex items-center justify-center text-white cursor-pointer z-40 transition-all"
+                    aria-label="Next photo"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+            </div>
 
-            {/* Modal Info Page Overlay */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 text-xs font-semibold text-white/90">
-              {lightboxProject.title} - Angle { (lightboxProject.images?.indexOf(lightboxImage) ?? 0) + 1 } of { lightboxProject.images?.length ?? 1 }
+            {/* Bottom details panel (Under the picture) */}
+            <div className="p-6 space-y-5">
+              <div className="space-y-3">
+                {/* Category badge & Title */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="px-2 py-0.5 bg-brand-blue/5 border border-brand-blue/10 rounded-full text-[9px] font-bold text-brand-blue uppercase tracking-wider">
+                    {lightboxProject.category}
+                  </span>
+                </div>
+                <h3 className="font-extrabold text-lg text-slate-900 leading-tight">
+                  {lightboxProject.title}
+                </h3>
+                {/* Description under the picture */}
+                <p className="text-xs text-slate-500 leading-relaxed pt-1">
+                  {lightboxProject.description}
+                </p>
+              </div>
+
+              {/* Add to Our Cart Button */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  handleToggleCart(e, lightboxProject);
+                }}
+                className={`w-full py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer border-none ${
+                  cart.find((item) => item.id === lightboxProject.id)
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
+                    : "bg-brand-blue text-white hover:bg-brand-blue/90 shadow-md"
+                }`}
+              >
+                {cart.find((item) => item.id === lightboxProject.id) ? (
+                  <>
+                    <CheckCircle className="w-4 h-4" />
+                    <span>Added to Inquiry Cart</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>Add to Inquiry Cart</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
       )}
+
     </section>
   );
 }
