@@ -1,67 +1,158 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Marquee from "@/components/Marquee";
 import Reveal from "@/components/Reveal";
 import { services } from "@/lib/services";
-import HeroCarousel from "@/components/HeroCarousel";
+
+const slides = [
+  {
+    title: "Custom Banners & Signage",
+    description: "Large-format weatherproof vinyl banners for promotions, storefronts, and outdoor events. Built to get noticed.",
+    image: "/hero-vinyl.jpg",
+    link: "/services/custom-banner-printing",
+    linkText: "Shop Banners",
+    tag: "WEATHERPROOF VINYL",
+    bgColor: "from-[#c86b51] to-[#a3523b]"
+  },
+  {
+    title: "Premium Apparel Decals",
+    description: "Vibrant Direct-to-Film transfer decals and custom graphics pressed on hoodies, tees, and sportswear.",
+    image: "/apparel-vinyl.jpg",
+    link: "/services/custom-tshirt-printing",
+    linkText: "Shop Apparel",
+    tag: "DTF TRANSFERS",
+    bgColor: "from-[#5f8c74] to-[#49705a]"
+  },
+  {
+    title: "Die-Cut Custom Stickers",
+    description: "Weatherproof contour-cut vinyl decals in matte or gloss finishes. High resolution with clean release.",
+    image: "/personal-vinyl.jpg",
+    link: "/services/custom-stickers",
+    linkText: "Shop Stickers",
+    tag: "CONTOUR DECALS",
+    bgColor: "from-[#8362b0] to-[#66498f]"
+  }
+];
 
 export default function HomePage() {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [paused]);
+
+  const handleNext = () => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+  };
+
+  const handlePrev = () => {
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   return (
     <>
-      {/* Hero Carousel — full width, at the very top */}
-      <HeroCarousel />
+      {/* Widescreen Hero Slider (Inspired by moo.com hero layout) */}
+      <section 
+        className="relative h-[360px] sm:h-[400px] lg:h-[440px] w-full overflow-hidden bg-slate-50 border-b border-border-subtle"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        {/* Soft grid mat overlay */}
+        <div className="absolute inset-0 grid-bg pointer-events-none opacity-[0.08] z-20" />
 
-      {/* Hero Section — video background with title over it */}
-      <section className="relative py-16 md:py-24 px-6 lg:px-12 overflow-hidden flex flex-col items-center justify-center text-center min-h-[45vh]">
-        {/* Background video */}
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/minimal-vinyl-bg.jpg"
+        {/* Slides */}
+        {slides.map((slide, idx) => (
+          <div
+            key={idx}
+            className={`absolute inset-0 flex flex-col md:flex-row transition-opacity duration-1000 ease-in-out ${
+              idx === current ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+            }`}
+            aria-hidden={idx !== current}
+          >
+            {/* Left Side: Wording & Background Color */}
+            <div className={`w-full md:w-[45%] lg:w-[50%] h-[55%] md:h-full bg-gradient-to-br ${slide.bgColor} flex flex-col justify-center px-6 py-6 sm:px-12 lg:px-20 text-left space-y-3.5 md:space-y-4 z-20 relative`}>
+              
+              <Reveal delay={0.05}>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-[1.1]">
+                  {slide.title}
+                </h2>
+              </Reveal>
+              <Reveal delay={0.15}>
+                <p className="text-xs sm:text-sm md:text-sm text-white/80 leading-relaxed max-w-md line-clamp-2 md:line-clamp-none">
+                  {slide.description}
+                </p>
+              </Reveal>
+              <Reveal delay={0.2} className="pt-1 flex flex-row gap-3">
+                <Link
+                  href={slide.link}
+                  className="group inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-blue text-white font-bold rounded-full hover:bg-brand-blue/90 shadow-md shadow-brand-blue/15 hover:scale-[1.02] transition-all duration-300 text-xs md:text-sm"
+                >
+                  <span>{slide.linkText}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+                <Link
+                  href="/services"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-white/25 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 hover:scale-[1.02] transition-all duration-300 text-xs md:text-sm"
+                >
+                  Our Services
+                </Link>
+              </Reveal>
+
+              {/* Slider Pagination Dots (Brought inside left-hand text column) */}
+              <div className="flex gap-1.5 pt-2">
+                {slides.map((_, dotIdx) => (
+                  <button
+                    key={dotIdx}
+                    onClick={() => setCurrent(dotIdx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer border-none ${
+                      dotIdx === current ? "w-5 bg-brand-blue" : "w-1.5 bg-white/20 hover:bg-white/40"
+                    }`}
+                    aria-label={`Go to slide ${dotIdx + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Right Side: Full-height Picture */}
+            <div className="w-full md:w-[55%] lg:w-[50%] h-[45%] md:h-full relative overflow-hidden bg-slate-900 z-10">
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority={idx === 0}
+                sizes="(max-w-768px) 100vw, 50vw"
+                className={`object-cover transition-transform duration-[6000ms] ease-out ${
+                  idx === current ? "scale-105" : "scale-100"
+                }`}
+              />
+            </div>
+          </div>
+        ))}
+
+        {/* Carousel Prev/Next Navigation Controls */}
+        <button
+          onClick={handlePrev}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full border border-white/20 bg-white/80 hover:bg-white text-ink shadow-md transition-all hover:scale-105 cursor-pointer hidden md:block"
+          aria-label="Previous slide"
         >
-          <source src="/Printing-Machine-Hero.mp4" type="video/mp4" />
-        </video>
-
-        {/* Ambient dark overlay for text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/55 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.25)_0%,rgba(0,0,0,0.65)_100%)] pointer-events-none" />
-
-        <div className="max-w-4xl mx-auto w-full relative z-10 flex flex-col items-center">
-          {/* Heading */}
-          <Reveal delay={0.05} className="mb-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-white leading-tight">
-              Vinyl Supplies <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">& More</span>
-            </h1>
-          </Reveal>
-
-          {/* Subtitle */}
-          <Reveal delay={0.1} className="mb-8 max-w-2xl">
-            <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed">
-              Industrial custom printing, banners, vehicle graphics, heat-transfer apparel decals, and high-performance plotting materials. Made to endure.
-            </p>
-          </Reveal>
-
-          {/* Action buttons */}
-          <Reveal delay={0.15} className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/design"
-              className="group px-8 py-4 bg-brand-blue text-white font-semibold rounded-full hover:bg-brand-blue/95 transition-all shadow-xl shadow-brand-blue/30 flex items-center gap-2 hover:scale-[1.03] duration-300"
-            >
-              Design Online
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/services"
-              className="px-8 py-4 border border-white/20 text-white font-semibold rounded-full hover:bg-white/25 transition-all bg-white/10 backdrop-blur-md hover:scale-[1.03] duration-300 shadow-lg shadow-black/10"
-            >
-              Our Services
-            </Link>
-          </Reveal>
-        </div>
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <button
+          onClick={handleNext}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2.5 rounded-full border border-white/20 bg-white/80 hover:bg-white text-ink shadow-md transition-all hover:scale-105 cursor-pointer hidden md:block"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </section>
 
       <Marquee />

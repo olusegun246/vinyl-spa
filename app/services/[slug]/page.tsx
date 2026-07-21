@@ -22,7 +22,59 @@ import { services } from "@/lib/services";
 export default function ServiceDetailPage() {
   const params = useParams();
   const slug = params?.slug as string;
-  const service = services.find((s) => s.slug === slug);
+  const existingService = services.find((s) => s.slug === slug);
+
+  // Helper to format title from slug
+  const formatTitle = (s: string) => {
+    return s
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const service = existingService || {
+    slug: slug,
+    title: formatTitle(slug),
+    description: `Professional custom printing for ${formatTitle(slug).toLowerCase()}, crafted with ultimate precision and quality.`,
+    tag: "Custom Print",
+    Icon: Printer,
+    image: "/coming-soon.jpg",
+    machineImage: "/rolls-vinyl.jpg",
+    machineName: "Commercial Wide-Format Digital Print Engine",
+    longDescription: `Get premium, custom-manufactured ${formatTitle(slug).toLowerCase()} tailored to your exact specifications. Choose your dimensions, materials, and quantities, and submit your print-ready artwork file for automated preflight checks.`,
+    specifications: [
+      "Custom size configurations available",
+      "High-resolution color fidelity",
+      "Premium material finishes",
+      "Automated preflight spec checks"
+    ]
+  };
+
+  // Dynamic size options based on product type
+  const getProductSizes = (productSlug: string) => {
+    const lower = productSlug.toLowerCase();
+    if (lower.includes("banner") || lower.includes("sign") || lower.includes("backdrop") || lower.includes("flag")) {
+      return ["2ft x 4ft", "3ft x 6ft", "4ft x 8ft", "5ft x 10ft", "18\" x 24\" (Yard Sign)", "24\" x 36\" (A-Frame)", "Custom Size"];
+    }
+    if (lower.includes("shirt") || lower.includes("apparel") || lower.includes("hoodie") || lower.includes("hat") || lower.includes("cap") || lower.includes("wear") || lower.includes("clothing") || lower.includes("t-shirt") || lower.includes("tshirt")) {
+      return ["Adult Small (S)", "Adult Medium (M)", "Adult Large (L)", "Adult X-Large (XL)", "Adult XX-Large (XXL)", "Youth Small", "Youth Medium", "Youth Large"];
+    }
+    if (lower.includes("sticker") || lower.includes("label") || lower.includes("decal")) {
+      return ["2\" x 2\" (Standard)", "3\" x 3\" (Popular)", "4\" x 4\" (Large)", "5\" x 5\" (Extra Large)", "Custom Dimensions"];
+    }
+    if (lower.includes("box") || lower.includes("pack") || lower.includes("pouch") || lower.includes("mailer") || lower.includes("bag")) {
+      return ["6\" x 6\" x 2\" (Mailer)", "8\" x 8\" x 4\" (Shipping)", "10\" x 10\" x 4\" (Large)", "Custom Box Dimensions"];
+    }
+    if (lower.includes("flyer") || lower.includes("brochure") || lower.includes("catalog") || lower.includes("menu") || lower.includes("postcard") || lower.includes("letterhead") || lower.includes("folder") || lower.includes("booklet") || lower.includes("sheet")) {
+      return ["4\" x 6\" (Postcard)", "8.5\" x 11\" (Letter)", "11\" x 17\" (Folded)", "Custom Print Size"];
+    }
+    if (lower.includes("mug") || lower.includes("tumbler") || lower.includes("cup") || lower.includes("drinkware")) {
+      return ["11oz (Standard Mug)", "15oz (Large Mug)", "20oz (Tumbler)", "30oz (XL Tumbler)"];
+    }
+    return ["Standard Size", "Custom Dimensions", "Bulk Dimensions"];
+  };
+
+  const sizeOptions = getProductSizes(slug);
 
   // File Upload states
   const [file, setFile] = useState<File | null>(null);
@@ -36,25 +88,10 @@ export default function ServiceDetailPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [occasion, setOccasion] = useState("Personal");
+  const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
   const [formError, setFormError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-
-  if (!service) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6 bg-paper-cool">
-        <AlertCircle className="w-16 h-16 text-rose-500 mb-4 animate-bounce" />
-        <h2 className="text-2xl font-bold text-ink">Service Category Not Found</h2>
-        <p className="text-ink-light text-sm mt-1 max-w-sm">We couldn&apos;t find the specific printing service you are looking for.</p>
-        <Link 
-          href="/services" 
-          className="mt-6 px-6 py-3 bg-brand-blue text-white font-semibold rounded-full hover:bg-brand-blue/90 shadow-md transition-all hover:scale-105"
-        >
-          Return to Services
-        </Link>
-      </div>
-    );
-  }
 
   // Handle PDF Drag & Drop
   const handleDrag = (e: React.DragEvent) => {
@@ -144,6 +181,7 @@ export default function ServiceDetailPage() {
       formData.append("phone", phone);
       formData.append("email", email);
       formData.append("occasion", occasion);
+      formData.append("selectedSize", selectedSize);
 
       const res = await fetch("/api/send-print", {
         method: "POST",
@@ -216,6 +254,48 @@ export default function ServiceDetailPage() {
           {/* Left Side: Machinery & Specs (7 cols) */}
           <div className="lg:col-span-7 space-y-12">
             
+
+            {/* Pictures Gallery Showcase */}
+            <Reveal className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="relative aspect-video sm:aspect-square w-full rounded-3xl overflow-hidden bg-slate-950 border border-border-subtle shadow-sm group">
+                {!existingService ? (
+                  /* Coming Soon Placeholder visual box */
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1d1d1f] to-[#2c3e50] flex flex-col items-center justify-center text-center p-6 select-none">
+                    <Printer className="w-12 h-12 text-brand-cyan mb-3 opacity-80 animate-pulse" />
+                    <h3 className="text-white text-xs font-extrabold tracking-tight uppercase">Product Photo Coming Soon</h3>
+                    <p className="text-white/60 text-[10px] mt-1 max-w-xs leading-relaxed">
+                      Our production team is currently printing sample batches. Upload your design file to start your order!
+                    </p>
+                  </div>
+                ) : (
+                  <Image
+                    src={service.image}
+                    alt={`${service.title} Sample`}
+                    fill
+                    sizes="(max-w-768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                )}
+                {existingService && (
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 text-left">
+                    <span className="text-white text-xs font-semibold">Finished Product Sample</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative aspect-video sm:aspect-square w-full rounded-3xl overflow-hidden bg-slate-950 border border-border-subtle shadow-sm group">
+                <Image
+                  src={service.machineImage}
+                  alt={service.machineName}
+                  fill
+                  sizes="(max-w-768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-4 text-left">
+                  <span className="text-white text-xs font-semibold text-center truncate w-full block">Production: {service.machineName}</span>
+                </div>
+              </div>
+            </Reveal>
 
             {/* Specifications Bento Box */}
             <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-sm shadow-ink/5 text-left">
@@ -364,7 +444,7 @@ export default function ServiceDetailPage() {
                     <div className="text-left w-full space-y-2">
                       <h4 className="font-bold text-emerald-800 text-center">Design Submitted Successfully!</h4>
                       <p className="text-xs text-emerald-700 leading-relaxed text-center">
-                        Your print-ready PDF has been sent to our production email. We will review your file specs and text/call you at <span className="font-bold">{phone}</span> to finalize your order details.
+                        Your print-ready PDF has been sent to our production email. We will review your file specs and text/call you at <span className="font-bold">{phone}</span> to finalize your order details for size <span className="font-bold">{selectedSize || sizeOptions[0]}</span>.
                       </p>
                     </div>
                   </div>
@@ -418,6 +498,19 @@ export default function ServiceDetailPage() {
                           placeholder="john.doe@example.com"
                           className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
                         />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Select Product Size</label>
+                        <select
+                          value={selectedSize}
+                          onChange={(e) => setSelectedSize(e.target.value)}
+                          className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                        >
+                          {sizeOptions.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                        </select>
                       </div>
 
                       <div>

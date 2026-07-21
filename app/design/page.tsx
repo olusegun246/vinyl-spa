@@ -2,12 +2,16 @@
 
 import { useState, useRef, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import {
   UploadCloud,
   FileText,
   CheckCircle,
   AlertCircle,
-  HelpCircle
+  HelpCircle,
+  ArrowRight,
+  Printer
 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 
@@ -81,15 +85,43 @@ function DesignWorkspaceContent() {
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Dynamic size options based on active template category
+  const getTemplateSizes = (templateId: string) => {
+    if (templateId === "banner") {
+      return ["2ft x 4ft", "3ft x 6ft", "4ft x 8ft", "5ft x 10ft", "Custom Size"];
+    }
+    if (templateId === "tshirt" || templateId === "org") {
+      return ["Adult Small (S)", "Adult Medium (M)", "Adult Large (L)", "Adult X-Large (XL)", "Adult XX-Large (XXL)", "Youth Small", "Youth Medium", "Youth Large"];
+    }
+    if (templateId === "stickers") {
+      return ["2\" x 2\" (Standard)", "3\" x 3\" (Popular)", "4\" x 4\" (Large)", "Custom Dimensions"];
+    }
+    if (templateId === "window") {
+      return ["18\" x 24\" (Standard)", "24\" x 36\" (A-Frame)", "Custom Window Graphics Dimensions"];
+    }
+    if (templateId === "merch") {
+      return ["11oz (Standard Mug)", "15oz (Large Mug)", "20oz (Tumbler)", "30oz (XL Tumbler)"];
+    }
+    return ["Standard Size", "Custom Dimensions", "Bulk Dimensions"];
+  };
+
+  const sizeOptions = getTemplateSizes(activeTemplate.id);
+
   // Customer Contact Info states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [occasion, setOccasion] = useState("Personal");
+  const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
   const [formError, setFormError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const options = getTemplateSizes(activeTemplate.id);
+    setSelectedSize(options[0]);
+  }, [activeTemplate]);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -178,6 +210,7 @@ function DesignWorkspaceContent() {
       formData.append("phone", phone);
       formData.append("email", email);
       formData.append("occasion", occasion);
+      formData.append("selectedSize", selectedSize);
 
       const res = await fetch("/api/send-print", {
         method: "POST",
@@ -205,118 +238,149 @@ function DesignWorkspaceContent() {
   };
 
   return (
-    <section className="pt-10 pb-16 md:pt-12 md:pb-24 px-6 lg:px-12 bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] min-h-screen grid-bg relative overflow-hidden">
-      {/* Top Header Ambient radial glows */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[140px] pointer-events-none -translate-y-1/2 -translate-x-1/4" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-cyan/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
-
-      {/* Soft Brand Ambient radial glows (Starts below hero) */}
-      <div className="absolute top-[480px] right-0 w-[700px] h-[700px] bg-brand-blue/5 rounded-full blur-[140px] pointer-events-none translate-x-1/4" />
-      <div className="absolute bottom-[200px] left-0 w-[600px] h-[600px] bg-brand-cyan/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/4" />
-      <div className="absolute bottom-0 left-1/2 w-[800px] h-[800px] bg-brand-blue/5 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 translate-y-1/3" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-
-        {/* 2-Column Split Workspace Layout Grid */}
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-
-          {/* Left Side: Heading, Steps & Editor (8 cols) */}
-          <div className="lg:col-span-8 space-y-6 text-left">
-            <Reveal className="space-y-2">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter text-slate-900 leading-none">
-                Design Your Own <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">Prints</span>
+    <>
+      {/* Design Online Page Split Hero */}
+      <section className="relative h-[360px] sm:h-[400px] lg:h-[440px] w-full overflow-hidden bg-slate-50 border-b border-border-subtle">
+        <div className="absolute inset-0 flex flex-col md:flex-row">
+          {/* Left Side: Wording & Background Color */}
+          <div className="w-full md:w-[45%] lg:w-[50%] h-[55%] md:h-full bg-gradient-to-br from-[#d1975e] to-[#ab753f] flex flex-col justify-center px-6 py-6 sm:px-12 lg:px-20 text-left space-y-3.5 md:space-y-4 z-20 relative">
+            <Reveal delay={0.05}>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-[1.1]">
+                Design your <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">prints online</span>
               </h1>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Design online using Templated&apos;s embedded editor, or skip the builder and upload <strong>any print-ready PDF</strong> you already have to send it directly to our printing staff.
+            </Reveal>
+            <Reveal delay={0.15}>
+              <p className="text-xs sm:text-sm md:text-sm text-white/80 leading-relaxed max-w-md">
+                Use our interactive editor to craft designs for shirts, signs, labels, and marketing materials—or skip the builder and upload your print-ready PDF file.
               </p>
             </Reveal>
+            <Reveal delay={0.2} className="pt-1 flex flex-row gap-3">
+              <button
+                onClick={() => {
+                  const editorElement = document.getElementById("templated-editor-panel");
+                  if (editorElement) {
+                    editorElement.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="group inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-blue text-white font-bold rounded-full hover:bg-brand-blue/90 shadow-md shadow-brand-blue/15 hover:scale-[1.02] transition-all duration-300 text-xs md:text-sm cursor-pointer"
+              >
+                <span>Start Designing</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-white/25 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 hover:scale-[1.02] transition-all duration-300 text-xs md:text-sm"
+              >
+                Get Support
+              </Link>
+            </Reveal>
+          </div>
 
-            {/* Horizontal 2-Step Design Roadmap inside the left side */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              {/* Step 1 Card: Design Your Artwork */}
-              <Reveal className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-md shadow-brand-blue/15 animate-pulse">
-                  01
-                </div>
-                <div className="space-y-1">
-                  <h3 className="font-extrabold text-sm text-slate-800 tracking-tight">Design online</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Select your category on the right, design in the embedded editor below, and export your artwork.
-                  </p>
-                </div>
-              </Reveal>
+          {/* Right Side: Full-height Showcase Video */}
+          <div className="w-full md:w-[55%] lg:w-[50%] h-[45%] md:h-full relative overflow-hidden bg-slate-950 z-10">
+            <video
+              src="/Printing-Machine-Hero-3.mp4"
+              className="w-full h-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-transparent pointer-events-none" />
+          </div>
+        </div>
+      </section>
 
-              {/* Step 2 Card: Export & Return */}
-              <Reveal className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-brand-cyan text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-md shadow-brand-cyan/15">
-                  02
+      {/* Main Workspace Section */}
+      <section id="templated-editor-panel" className="py-16 md:py-24 px-6 lg:px-12 bg-gradient-to-b from-[#f1f5f9] via-[#e2e8f0] to-[#f1f5f9] min-h-screen relative overflow-hidden border-t border-border-subtle">
+        {/* Top Header Ambient radial glows */}
+        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[140px] pointer-events-none -translate-y-1/2 -translate-x-1/4" />
+        
+        {/* Soft Brand Ambient radial glows */}
+        <div className="absolute top-[480px] right-0 w-[700px] h-[700px] bg-brand-blue/15 rounded-full blur-[140px] pointer-events-none translate-x-1/4" />
+        <div className="absolute bottom-[200px] left-0 w-[600px] h-[600px] bg-brand-cyan/15 rounded-full blur-[120px] pointer-events-none -translate-x-1/4" />
+        <div className="absolute bottom-0 left-1/2 w-[800px] h-[800px] bg-brand-blue/10 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 translate-y-1/3" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+
+          {/* 2-Column Split Workspace Grid */}
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+            {/* Left Side: Steps & Editor (8 cols) */}
+            <div className="lg:col-span-8 space-y-6 text-left">
+              
+              {/* Horizontal 2-Step Design Roadmap */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                {/* Step 1 Card: Design Your Artwork */}
+                <Reveal className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-md shadow-brand-blue/15 animate-pulse">
+                    01
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="font-extrabold text-sm text-slate-800 tracking-tight">Design online</h3>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      Select your category on the right, design in the embedded editor below, and export your artwork.
+                    </p>
+                  </div>
+                </Reveal>
+
+                {/* Step 2 Card: Export & Return */}
+                <Reveal className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-brand-cyan text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-md shadow-brand-cyan/15">
+                    02
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="font-extrabold text-sm text-slate-800 tracking-tight">Submit Any PDF</h3>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      Upload your exported design file, or any print-ready PDF from Photoshop, Illustrator, or another program on the right.
+                    </p>
+                  </div>
+                </Reveal>
+              </div>
+
+              {/* Templated embedded iframe Workspace */}
+              <Reveal key="editor-workspace" className="w-full space-y-3">
+                <div className="flex items-center justify-between bg-slate-900 text-white px-5 py-3 rounded-t-2xl shadow-md border border-slate-800">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">
+                      Templated Embedded Editor: <span className="text-brand-cyan font-extrabold">{activeTemplate.name} Workspace</span>
+                    </span>
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <h3 className="font-extrabold text-sm text-slate-800 tracking-tight">Submit Any PDF</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    Upload your exported design file, or any print-ready PDF from Photoshop, Illustrator, or another program on the right.
-                  </p>
+                <div className="relative w-full h-[600px] rounded-b-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-100">
+                  <iframe
+                    src={TEMPLATED_EMBED_URL}
+                    className="w-full h-full border-none"
+                    allow="clipboard-write; clipboard-read"
+                    title="Templated Design Editor"
+                  />
                 </div>
               </Reveal>
             </div>
 
-            {/* Templated embedded iframe Workspace (Always Visible) */}
-            <Reveal key="editor-workspace" className="w-full space-y-3">
-              <div className="flex items-center justify-between bg-slate-900 text-white px-5 py-3 rounded-t-2xl shadow-md border border-slate-800">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-200">
-                    Templated Embedded Editor: <span className="text-brand-cyan font-extrabold">{activeTemplate.name} Workspace</span>
-                  </span>
-                </div>
-              </div>
-              <div className="relative w-full h-[600px] rounded-b-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-100">
-                <iframe
-                  src={TEMPLATED_EMBED_URL}
-                  className="w-full h-full border-none"
-                  allow="clipboard-write; clipboard-read"
-                  title="Templated Design Editor"
-                />
-              </div>
-            </Reveal>
-          </div>
-
-          {/* Right Side: Video Player, Form, and Support Box (4 cols) */}
+          {/* Right Side: Form and Support Box (4 cols) */}
           <div className="lg:col-span-4 space-y-6">
-            {/* Autoplay Printing Production Video */}
-            <Reveal key="video-guide" className="w-full">
-              <div className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-slate-950">
-                <video
-                  src="/Printing-Machine-Hero-3.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              </div>
-            </Reveal>
-
+            
             {/* Print Submission Desk Form Card */}
-            <Reveal className="bg-white border border-slate-200/80 rounded-3xl p-5 md:p-6 shadow-xl shadow-slate-100 text-left space-y-6 relative overflow-hidden">
-              <div className="border-b border-slate-200 pb-4">
-                <h3 className="font-extrabold text-lg text-slate-900 tracking-tight">Print Submission Desk</h3>
-                <p className="text-[10px] text-slate-500 mt-0.5">Submit designs to our printing staff.</p>
+            <Reveal className="bg-white border border-border-subtle rounded-3xl p-5 md:p-6 shadow-xl shadow-ink/5 text-left space-y-6 relative overflow-hidden">
+              <div className="border-b border-border-subtle pb-4">
+                <h3 className="font-extrabold text-lg text-ink tracking-tight">Print Submission Desk</h3>
+                <p className="text-[10px] text-ink-light mt-0.5">Submit designs to our printing staff.</p>
               </div>
 
               {/* Step 1: Choose Product & Design */}
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-2">
+                  <h4 className="font-bold text-ink text-xs uppercase tracking-wider flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[9px]">1</span>
                     Choose Product
                   </h4>
-                  <span className="text-[9px] font-semibold text-slate-400 uppercase">Required</span>
+                  <span className="text-[9px] font-semibold text-ink-light uppercase">Required</span>
                 </div>
 
                 <div>
-                  <label className="block text-[9px] font-bold text-slate-400 uppercase mb-1 text-left">Service Category</label>
+                  <label className="block text-[9px] font-bold text-ink-light uppercase mb-1 text-left">Service Category</label>
                   <select
                     value={activeTemplate.id}
                     onChange={(e) => {
@@ -327,7 +391,7 @@ function DesignWorkspaceContent() {
                         setSubmitSuccess(false);
                       }
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-brand-blue/50 transition-colors"
+                    className="w-full px-3 py-2 bg-paper-cool border border-border-subtle rounded-xl text-xs font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
                   >
                     {templates.map((tpl) => (
                       <option key={tpl.id} value={tpl.id}>{tpl.name}</option>
@@ -337,13 +401,13 @@ function DesignWorkspaceContent() {
               </div>
 
               {/* Step 2: Drag & Drop PDF */}
-              <div className="space-y-3 pt-5 border-t border-slate-200">
+              <div className="space-y-3 pt-5 border-t border-border-subtle">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center gap-2">
+                  <h4 className="font-bold text-ink text-xs uppercase tracking-wider flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[9px]">2</span>
                     Upload PDF Design
                   </h4>
-                  <span className="text-[9px] font-semibold text-slate-400 uppercase">Required</span>
+                  <span className="text-[9px] font-semibold text-ink-light uppercase">Required</span>
                 </div>
 
                 {!file ? (
@@ -356,7 +420,7 @@ function DesignWorkspaceContent() {
                     className={`border-2 border-dashed rounded-2xl p-5 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${
                       dragActive
                         ? "border-brand-blue bg-brand-blue/5 scale-[0.99]"
-                        : "border-slate-300 hover:border-brand-blue/40 bg-slate-50/50"
+                        : "border-border-medium hover:border-brand-blue/40 bg-paper-cool/30"
                     }`}
                   >
                     <input
@@ -367,8 +431,8 @@ function DesignWorkspaceContent() {
                       className="hidden"
                     />
                     <UploadCloud className="w-7 h-7 text-brand-blue/60 mb-2" />
-                    <span className="text-xs font-semibold text-slate-800">Drag & Drop print PDF</span>
-                    <span className="text-[10px] text-slate-400 mt-0.5">or click to browse files</span>
+                    <span className="text-xs font-semibold text-ink">Drag & Drop print PDF</span>
+                    <span className="text-[10px] text-ink-light mt-0.5">or click to browse files</span>
                   </div>
                 ) : (
                   <div className="border border-slate-200 rounded-2xl p-3 bg-slate-50/50 flex flex-col gap-2">
@@ -434,7 +498,7 @@ function DesignWorkspaceContent() {
                     <div className="text-left w-full space-y-1">
                       <h4 className="font-bold text-emerald-800 text-xs text-center">Design Submitted Successfully!</h4>
                       <p className="text-[10px] text-emerald-700 leading-relaxed text-center">
-                        Your print-ready PDF has been sent to our production email. We will review your file specs and text/call you at <span className="font-bold">{phone}</span> to finalize your order details.
+                        Your print-ready PDF has been sent to our production email. We will review your file specs and text/call you at <span className="font-bold">{phone}</span> to finalize your order details for size <span className="font-bold">{selectedSize || sizeOptions[0]}</span>.
                       </p>
                     </div>
                   </div>
@@ -491,6 +555,19 @@ function DesignWorkspaceContent() {
                       </div>
 
                       <div>
+                        <label className="block text-[9px] font-bold text-slate-400 uppercase mb-1 text-left">Select Template Size</label>
+                        <select
+                          value={selectedSize}
+                          onChange={(e) => setSelectedSize(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none focus:border-brand-blue/50 transition-colors"
+                        >
+                          {sizeOptions.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
                         <label className="block text-[9px] font-bold text-slate-400 uppercase mb-1 text-left">Occasion</label>
                         <select
                           value={occasion}
@@ -537,11 +614,11 @@ function DesignWorkspaceContent() {
             </Reveal>
 
             {/* Support Box */}
-            <Reveal className="bg-white/80 border border-slate-200/80 rounded-3xl p-5 text-left flex items-start gap-3 shadow-sm backdrop-blur-sm">
+            <Reveal className="bg-white border border-border-subtle rounded-3xl p-5 text-left flex items-start gap-3 shadow-sm backdrop-blur-sm">
               <HelpCircle className="w-5 h-5 text-brand-blue flex-shrink-0 mt-0.5" />
               <div className="text-[11px] space-y-1">
-                <h4 className="font-bold text-slate-900">Need assistance?</h4>
-                <p className="text-slate-600 leading-relaxed">
+                <h4 className="font-bold text-ink">Need assistance?</h4>
+                <p className="text-ink-light leading-relaxed">
                   Call our team at <strong>346-218-0615</strong> or email us at <strong>VinylSupplyMore@gmail.com</strong> for manual setup.
                 </p>
               </div>
@@ -550,6 +627,7 @@ function DesignWorkspaceContent() {
         </div>
       </div>
     </section>
+  </>
   );
 }
 

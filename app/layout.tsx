@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-paper-cool text-ink font-sans antialiased">
         <JsonLd />
         <Navbar />
-        <main className="pt-16 md:pt-20">{children}</main>
+        <main className="pt-[96px] md:pt-[104px]">{children}</main>
         <Footer />
       </body>
     </html>
