@@ -27,19 +27,12 @@ const categories = [
   {
     label: "Marketing Materials",
     displayLabel: "Marketing Materials",
-    cols: 3,
+    cols: 2,
     products: [
-      { name: "Booklets", href: "/services" },
-      { name: "Brochures", href: "/services" },
       { name: "Business Flyers", href: "/services" },
-      { name: "Calendars", href: "/services" },
-      { name: "Catalogs", href: "/services" },
       { name: "Club Flyers", href: "/services" },
-      { name: "Comp Cards", href: "/services" },
       { name: "Custom Flyers", href: "/services" },
-      { name: "Die Cut Printing", href: "/services" },
       { name: "Direct Mail", href: "/services" },
-      { name: "Door Hangers", href: "/services" },
       { name: "Every Door Direct Mail", href: "/services" },
       { name: "Event Flyers", href: "/services" },
       { name: "Flyers", href: "/services" },
@@ -50,102 +43,55 @@ const categories = [
       { name: "Mailing Flyers", href: "/services" },
       { name: "Menus", href: "/services" },
       { name: "Postcards", href: "/services" },
-      { name: "Rack Cards", href: "/services" },
-      { name: "Roll Stickers", href: "/services/custom-stickers" },
       { name: "Sell Sheets", href: "/services" },
       { name: "Sticker Sheets", href: "/services/custom-stickers" },
-      { name: "Table Tents", href: "/services" },
-      { name: "Take Out Menus", href: "/services" },
       { name: "Vinyl Banners", href: "/services/custom-banner-printing" }
     ]
   },
   {
     label: "Business Essentials",
     displayLabel: "Business Essentials",
-    cols: 3,
+    cols: 2,
     products: [
       { name: "Appointment Cards", href: "/services" },
       { name: "Business Cards", href: "/services" },
       { name: "Business Flyers", href: "/services" },
       { name: "Carbonless Forms", href: "/services" },
-      { name: "Catalogs", href: "/services" },
       { name: "Direct Mail", href: "/services" },
       { name: "Every Door Direct Mail", href: "/services" },
       { name: "Envelopes", href: "/services" },
       { name: "Flyers", href: "/services" },
-      { name: "Key Card Holders", href: "/services" },
       { name: "Letterhead", href: "/services" },
       { name: "Loyalty Cards", href: "/services" },
       { name: "Mailing Flyers", href: "/services" },
       { name: "Mailing Services", href: "/services" },
-      { name: "Plastic Business Cards", href: "/services" },
       { name: "Postcards", href: "/services" },
       { name: "Presentation Folders", href: "/services" },
-      { name: "Rack Cards", href: "/services" },
-      { name: "Round Business Cards", href: "/services" },
       { name: "Self-Seal Envelopes", href: "/services" },
       { name: "Sell Sheets", href: "/services" },
       { name: "Silk Presentation Folders", href: "/services" },
       { name: "Square Business Cards", href: "/services" },
       { name: "Standard Business Cards", href: "/services" },
-      { name: "Roll Stickers", href: "/services/custom-stickers" },
       { name: "Sticker Sheets", href: "/services/custom-stickers" },
-      { name: "Custom Boxes", href: "/services" },
-      { name: "Packaging Tape", href: "/services" },
       { name: "Company Apparel", href: "/services/custom-tshirt-printing" }
-    ]
-  },
-  {
-    label: "Boxes & Packaging",
-    displayLabel: "Boxes & Packaging",
-    cols: 2,
-    products: [
-      { name: "Custom Boxes", href: "/services" },
-      { name: "Custom Pouches", href: "/services" },
-      { name: "Mailer Boxes", href: "/services" },
-      { name: "Product Boxes", href: "/services" },
-      { name: "Shipping Boxes", href: "/services" },
-      { name: "Packaging Tape", href: "/services" },
-      { name: "Product Labels", href: "/services/custom-stickers" },
-      { name: "Hang Tags", href: "/services" },
-      { name: "Header Cards", href: "/services" },
-      { name: "Paper Bags", href: "/services" },
-      { name: "Mailer Envelopes", href: "/services" },
-      { name: "Tissue Paper", href: "/services" },
-      { name: "Wrapping Paper", href: "/services" },
-      { name: "All Packaging", href: "/services" }
     ]
   },
   {
     label: "Label and Stickers",
     displayLabel: "Label and Stickers",
-    cols: 3,
+    cols: 2,
     products: [
       { name: "Custom Stickers", href: "/services/custom-stickers" },
-      { name: "Roll Stickers", href: "/services/custom-stickers" },
       { name: "Sticker Sheets", href: "/services/custom-stickers" },
       { name: "Bumper Stickers", href: "/services/custom-stickers" },
       { name: "Clear Stickers", href: "/services/custom-stickers" },
       { name: "Vinyl Stickers", href: "/services/custom-stickers" },
-      { name: "Metallic Stickers", href: "/services/custom-stickers" },
       { name: "Oval Stickers", href: "/services/custom-stickers" },
       { name: "Rectangle Stickers", href: "/services/custom-stickers" },
       { name: "Round Stickers", href: "/services/custom-stickers" },
       { name: "Square Stickers", href: "/services/custom-stickers" },
-      { name: "Die-Cut Stickers", href: "/services/custom-stickers" },
-      { name: "Custom Labels", href: "/services/custom-stickers" },
-      { name: "Product Labels", href: "/services/custom-stickers" },
-      { name: "Food Labels", href: "/services/custom-stickers" },
-      { name: "Water Bottle Labels", href: "/services/custom-stickers" },
-      { name: "Wine Labels", href: "/services/custom-stickers" },
-      { name: "Beer Labels", href: "/services/custom-stickers" },
-      { name: "Jar Labels", href: "/services/custom-stickers" },
-      { name: "Hand Sanitizer Labels", href: "/services/custom-stickers" },
-      { name: "Hand Sanitizer Stickers", href: "/services/custom-stickers" },
       { name: "DTF Transfers", href: "/services/custom-tshirt-printing" },
       { name: "Return Address Labels", href: "/services/custom-stickers" },
-      { name: "Reflective Stickers", href: "/services/custom-stickers" },
-      { name: "Label Sets", href: "/services/custom-stickers" },
       { name: "All Labels", href: "/services/custom-stickers" },
       { name: "All Stickers", href: "/services/custom-stickers" }
     ]
@@ -153,17 +99,13 @@ const categories = [
   {
     label: "Banner & Signs",
     displayLabel: "Banner & Signs",
-    cols: 3,
+    cols: 2,
     products: [
       { name: "A-Frame Signs", href: "/services" },
-      { name: "Aluminum Signs", href: "/services" },
       { name: "Backdrops", href: "/services" },
       { name: "Banners", href: "/services/custom-banner-printing" },
       { name: "Canvas Prints", href: "/services" },
-      { name: "Car Magnets", href: "/services" },
       { name: "Deluxe Retractable Banners", href: "/services" },
-      { name: "Fabric Banners", href: "/services/custom-banner-printing" },
-      { name: "Feather Flags", href: "/services" },
       { name: "Mesh Banners", href: "/services/custom-banner-printing" },
       { name: "Mounted Posters", href: "/services" },
       { name: "Pole Banners", href: "/services" },
@@ -171,7 +113,6 @@ const categories = [
       { name: "Retractable Banners", href: "/services" },
       { name: "Rolled Canvas", href: "/services" },
       { name: "Stretched Canvas", href: "/services" },
-      { name: "Teardrop Flags", href: "/services" },
       { name: "Vinyl Banners", href: "/services/custom-banner-printing" },
       { name: "Wall Decals", href: "/services" },
       { name: "Window Clings", href: "/services/custom-window-graphics" },
@@ -191,11 +132,7 @@ const categories = [
       { name: "Embroidered Hats", href: "/services/custom-tshirt-printing" },
       { name: "Branded Drinkware", href: "/services/custom-merchandise" },
       { name: "Custom Ceramic Mugs", href: "/services/custom-merchandise" },
-      { name: "Laser Engraved Tumblers", href: "/services/custom-merchandise" },
       { name: "Tote Bags", href: "/services/custom-merchandise" },
-      { name: "Notebooks & Agendas", href: "/services/custom-merchandise" },
-      { name: "Keychains & Lanyards", href: "/services/custom-merchandise" },
-      { name: "Logo Pens", href: "/services/custom-merchandise" },
       { name: "All Promotional Items", href: "/services/custom-merchandise" }
     ]
   }
@@ -212,16 +149,16 @@ export default function Navbar() {
     <nav className="absolute top-0 left-0 w-full z-50 bg-white border-b border-border-subtle shadow-sm transition-all duration-300">
       
       {/* Tier 1: Logo & Utility links */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-14 md:h-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-12 md:h-16">
         {/* Logo */}
-        <Link href="/" className="flex items-center group py-1.5">
+        <Link href="/" className="flex items-center group py-1">
           <Image
             src="/logo.png"
             alt="Vinyl Supplies & More"
             width={1081}
             height={200}
             priority
-            className="h-10 md:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+            className="h-8 md:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
           />
         </Link>
 

@@ -221,25 +221,16 @@ export default function GalleryPage() {
   };
 
   return (
-    <section className="py-24 px-6 lg:px-12 bg-gradient-to-b from-[#f1f5f9] via-[#e2e8f0] to-[#f1f5f9] min-h-screen grid-bg relative overflow-hidden">
-      {/* Top Header Ambient radial glows */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[140px] pointer-events-none -translate-y-1/2 -translate-x-1/4" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-cyan/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
-
-      {/* Soft Brand Ambient radial glows (Starts below hero) */}
-      <div className="absolute top-[480px] right-0 w-[700px] h-[700px] bg-brand-blue/15 rounded-full blur-[140px] pointer-events-none translate-x-1/4" />
-      <div className="absolute bottom-[200px] left-0 w-[600px] h-[600px] bg-brand-cyan/15 rounded-full blur-[120px] pointer-events-none -translate-x-1/4" />
-      <div className="absolute bottom-0 left-1/2 w-[800px] h-[800px] bg-brand-blue/10 rounded-full blur-[150px] pointer-events-none -translate-x-1/2 translate-y-1/3" />
-
+    <section className="py-24 px-6 lg:px-12 bg-[#96AC85] min-h-screen relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Header Hero Section */}
         <div className="grid lg:grid-cols-12 gap-12 items-center mb-16">
           <Reveal className="lg:col-span-7 space-y-4 text-left">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter text-black leading-tight">
-              Our Previous <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent font-black">Work</span>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-black leading-tight font-poppins">
+              Our Previous Work
             </h1>
-            <p className="text-base md:text-lg text-black leading-relaxed max-w-xl">
+            <p className="text-base text-black/80 leading-relaxed max-w-xl">
               Explore a curated showcase of our previous projects. See something you like? Click any item to request the same build or customize it to fit your brand.
             </p>
           </Reveal>

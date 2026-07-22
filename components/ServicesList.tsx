@@ -12,21 +12,14 @@ const categories = [
     label: "Marketing Materials",
     slug: "marketing-materials",
     Icon: BookOpen,
-    description: "Custom booklets, brochures, catalogs, flyers, and promotional prints designed to capture attention and elevate your brand presence.",
+    description: "Custom banners, flyers, and promotional prints designed to capture attention and elevate your brand presence.",
     image: "/hero-vinyl.jpg",
     tab: "marketing",
     products: [
-      "Booklets",
-      "Brochures",
       "Business Flyers",
-      "Calendars",
-      "Catalogs",
       "Club Flyers",
-      "Comp Cards",
       "Custom Flyers",
-      "Die Cut Printing",
       "Direct Mail",
-      "Door Hangers",
       "Every Door Direct Mail",
       "Event Flyers",
       "Flyers",
@@ -37,12 +30,8 @@ const categories = [
       "Mailing Flyers",
       "Menus",
       "Postcards",
-      "Rack Cards",
-      "Roll Stickers",
       "Sell Sheets",
       "Sticker Sheets",
-      "Table Tents",
-      "Take Out Menus",
       "Vinyl Banners"
     ]
   },
@@ -50,7 +39,7 @@ const categories = [
     label: "Business Essentials",
     slug: "business-essentials",
     Icon: Briefcase,
-    description: "Operate professionally with premium custom business cards, corporate letterhead, folders, envelopes, and carbonless forms.",
+    description: "Operate professionally with premium custom business cards, letterhead, folders, envelopes, and carbonless forms.",
     image: "/org-vinyl.jpg",
     tab: "business",
     products: [
@@ -58,30 +47,22 @@ const categories = [
       "Business Cards",
       "Business Flyers",
       "Carbonless Forms",
-      "Catalogs",
       "Direct Mail",
       "Every Door Direct Mail",
       "Envelopes",
       "Flyers",
-      "Key Card Holders",
       "Letterhead",
       "Loyalty Cards",
       "Mailing Flyers",
       "Mailing Services",
-      "Plastic Business Cards",
       "Postcards",
       "Presentation Folders",
-      "Rack Cards",
-      "Round Business Cards",
       "Self-Seal Envelopes",
       "Sell Sheets",
       "Silk Presentation Folders",
       "Square Business Cards",
       "Standard Business Cards",
-      "Roll Stickers",
       "Sticker Sheets",
-      "Custom Boxes",
-      "Packaging Tape",
       "Company Apparel"
     ]
   },
@@ -89,16 +70,14 @@ const categories = [
     label: "Boxes & Packaging",
     slug: "boxes-and-packaging",
     Icon: Package,
-    description: "Elevate your unboxing experience with custom mailer boxes, product packaging, shipping cartons, and branded packaging tape.",
+    description: "Elevate your unboxing experience with custom mailer boxes, product packaging, and shipping cartons.",
     image: "/rolls-vinyl.jpg",
     tab: "packaging",
     products: [
-      "Custom Boxes",
       "Custom Pouches",
       "Mailer Boxes",
       "Product Boxes",
       "Shipping Boxes",
-      "Packaging Tape",
       "Product Labels",
       "Hang Tags",
       "Header Cards",
@@ -113,35 +92,21 @@ const categories = [
     label: "Label and Stickers",
     slug: "label-and-stickers",
     Icon: Tag,
-    description: "Contour-cut die-cut stickers, roll labels, sticker sheets, product packaging labels, and durable apparel transfer decals.",
+    description: "Contour-cut sticker sheets, custom vinyl decals, and durable apparel transfer decals.",
     image: "/personal-vinyl.jpg",
     tab: "stickers",
     products: [
       "Custom Stickers",
-      "Roll Stickers",
       "Sticker Sheets",
       "Bumper Stickers",
       "Clear Stickers",
       "Vinyl Stickers",
-      "Metallic Stickers",
       "Oval Stickers",
       "Rectangle Stickers",
       "Round Stickers",
       "Square Stickers",
-      "Die-Cut Stickers",
-      "Custom Labels",
-      "Product Labels",
-      "Food Labels",
-      "Water Bottle Labels",
-      "Wine Labels",
-      "Beer Labels",
-      "Jar Labels",
-      "Hand Sanitizer Labels",
-      "Hand Sanitizer Stickers",
       "DTF Transfers",
       "Return Address Labels",
-      "Reflective Stickers",
-      "Label Sets",
       "All Labels",
       "All Stickers"
     ]
@@ -150,19 +115,15 @@ const categories = [
     label: "Banner & Signs",
     slug: "banner-and-signs",
     Icon: Flag,
-    description: "Outdoor vinyl banners, large fabric backdrops, yard signage, mounted posters, A-frame sign boards, and feather flags.",
+    description: "Outdoor vinyl banners, large fabric backdrops, yard signage, mounted posters, A-frame sign boards, and retractable banners.",
     image: "/window-vinyl.jpg",
     tab: "signage",
     products: [
       "A-Frame Signs",
-      "Aluminum Signs",
       "Backdrops",
       "Banners",
       "Canvas Prints",
-      "Car Magnets",
       "Deluxe Retractable Banners",
-      "Fabric Banners",
-      "Feather Flags",
       "Mesh Banners",
       "Mounted Posters",
       "Pole Banners",
@@ -170,7 +131,6 @@ const categories = [
       "Retractable Banners",
       "Rolled Canvas",
       "Stretched Canvas",
-      "Teardrop Flags",
       "Vinyl Banners",
       "Wall Decals",
       "Window Clings",
@@ -185,22 +145,18 @@ const categories = [
     label: "Promotional Items",
     slug: "promotional-items",
     Icon: Gift,
-    description: "Custom hoodies and t-shirts, embroidered hats, ceramic mugs, insulated tumblers, notebooks, and promotional accessories.",
+    description: "Custom hoodies and t-shirts, embroidered hats, ceramic mugs, tote bags, and promotional gifts.",
     image: "/merch-vinyl.jpg",
     tab: "promo",
     products: [
       "Custom Apparel",
       "Embroidered Hats",
       "Ceramic Mugs",
-      "Insulated Tumblers",
       "Logo Tote Bags",
-      "Notebooks & Pens",
-      "Custom Keychains",
       "Branded Gifts",
       "T-Shirts",
       "Hoodies",
       "Polo Shirts",
-      "Travel Mugs",
       "Drawstring Bags",
       "Stress Balls"
     ]
@@ -225,18 +181,10 @@ export default function ServicesList() {
   );
 
   return (
-    <section className="py-20 px-6 lg:px-12 bg-paper-cool relative border-t border-border-subtle">
-      {/* Soft grid background */}
-      <div className="absolute inset-0 grid-bg pointer-events-none opacity-[0.05]" />
-      
-      {/* Ambient radial glows */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-blue/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-cyan/5 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        {/* Filter Tabs Block */}
-        <div className="flex flex-wrap justify-center gap-2 mb-16 max-w-4xl mx-auto">
+    <>
+      {/* Filter Tabs Row (Clean White Background) */}
+      <div className="pt-8 pb-6 px-6 lg:px-12 bg-white relative border-b border-border-subtle z-20">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -251,80 +199,91 @@ export default function ServicesList() {
             </button>
           ))}
         </div>
+      </div>
 
-        {/* Categories Grid (Tab is All) vs Catalog Grid (Tab is Selected) */}
-        {activeTab === "all" ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCategories.map(({ Icon, label, slug, description, image, products }) => (
-              <Reveal
-                key={label}
-                className="group/card bg-white border border-border-subtle rounded-3xl p-6 hover:shadow-xl hover:shadow-ink/5 hover:border-brand-blue/20 transition-all duration-300 flex flex-col items-stretch text-left relative overflow-hidden"
-              >
-                {/* Media Container with Product Sample Image */}
-                <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-100 mb-5 border border-border-subtle/50 shadow-inner">
-                  <Image
-                    src={image}
-                    alt={label}
-                    fill
-                    sizes="(max-w-768px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
-                  />
+      {/* Main Services Cards Section (Clay Peach Background behind Cards) */}
+      <section className="py-16 px-6 lg:px-12 bg-[#D2E2EC]/40 relative border-t border-border-subtle">
+        {/* Soft grid background */}
+        <div className="absolute inset-0 grid-bg pointer-events-none opacity-[0.05]" />
+        
+        {/* Ambient radial glows */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-blue/5 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-cyan/5 rounded-full blur-[120px] pointer-events-none" />
 
-                  {/* Symbol Container overlay on bottom-left */}
-                  <div className="absolute bottom-3 left-3 w-9 h-9 bg-white/95 backdrop-blur-sm border border-border-subtle/30 rounded-xl flex items-center justify-center shadow-md">
-                    <Icon className="w-5 h-5 text-brand-blue" />
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Categories Grid (Tab is All) vs Catalog Grid (Tab is Selected) */}
+          {activeTab === "all" ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCategories.map(({ Icon, label, slug, description, image, products }) => (
+                <Reveal
+                  key={label}
+                  className="group/card bg-white border border-border-subtle rounded-2xl p-5 hover:shadow-xl hover:shadow-ink/5 hover:border-brand-blue/20 transition-all duration-300 flex flex-col items-stretch text-left relative overflow-hidden"
+                >
+                  {/* Media Container with Product Sample Image */}
+                  <div className="relative w-full aspect-[2/1] rounded-xl overflow-hidden bg-slate-100 mb-3.5 border border-border-subtle/50 shadow-inner">
+                    <Image
+                      src={image}
+                      alt={label}
+                      fill
+                      sizes="(max-w-768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
+                    />
+
+                    {/* Symbol Container overlay on bottom-left */}
+                    <div className="absolute bottom-3 left-3 w-9 h-9 bg-white/95 backdrop-blur-sm border border-border-subtle/30 rounded-xl flex items-center justify-center shadow-md">
+                      <Icon className="w-5 h-5 text-brand-blue" />
+                    </div>
                   </div>
-                </div>
 
-                {/* Title & Description */}
-                <h2 className="text-xl font-extrabold mb-2.5 text-ink group-hover/card:text-brand-blue transition-colors duration-300 tracking-tight">
-                  {label}
-                </h2>
-                
-                <p className="text-ink-light text-xs leading-relaxed mb-4 flex-1">
-                  {description}
-                </p>
+                  {/* Title & Description */}
+                  <h2 className="text-base font-extrabold mb-1.5 text-ink group-hover/card:text-brand-blue transition-colors duration-300 tracking-tight">
+                    {label}
+                  </h2>
+                  
+                  <p className="text-ink-light text-[11px] leading-relaxed mb-3 flex-1">
+                    {description}
+                  </p>
 
-                {/* Popular Products Checklist Grid (Capped preview of top 8) */}
-                <div className="pt-4 border-t border-border-subtle/50 space-y-2 mb-6">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-extrabold text-ink-muted uppercase tracking-wider block">
-                      Popular Products
-                    </span>
+                  {/* Popular Products Checklist Grid (Capped preview of top 8) */}
+                  <div className="pt-3 border-t border-border-subtle/40 space-y-1.5 mb-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-extrabold text-ink-muted uppercase tracking-wider block">
+                        Popular Products
+                      </span>
+                      <button
+                        onClick={() => setActiveTab(slug === "marketing-materials" ? "marketing" : slug === "business-essentials" ? "business" : slug === "boxes-and-packaging" ? "packaging" : slug === "label-and-stickers" ? "stickers" : slug === "banner-and-signs" ? "signage" : "promo")}
+                        className="text-[9px] font-extrabold text-brand-blue uppercase hover:underline"
+                      >
+                        View All {products.length}
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                      {products.slice(0, 8).map((prod) => (
+                        <Link
+                          key={prod}
+                          href={getProductSlug(prod)}
+                          className="flex items-center gap-1.5 text-[11px] font-semibold text-ink-light hover:text-brand-blue truncate"
+                        >
+                          <Check className="w-3.5 h-3.5 text-brand-blue flex-shrink-0" />
+                          <span className="truncate">{prod}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* View Details Link */}
+                  <div className="mt-auto pt-2">
                     <button
                       onClick={() => setActiveTab(slug === "marketing-materials" ? "marketing" : slug === "business-essentials" ? "business" : slug === "boxes-and-packaging" ? "packaging" : slug === "label-and-stickers" ? "stickers" : slug === "banner-and-signs" ? "signage" : "promo")}
-                      className="text-[9px] font-extrabold text-brand-blue uppercase hover:underline"
+                      className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-blue hover:text-brand-blue/80 transition-colors cursor-pointer"
                     >
-                      View All {products.length}
+                      <span>Explore {products.length} Products</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover/card:translate-x-1 transition-transform" />
                     </button>
                   </div>
-                  <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
-                    {products.slice(0, 8).map((prod) => (
-                      <Link
-                        key={prod}
-                        href={getProductSlug(prod)}
-                        className="flex items-center gap-1.5 text-[11px] font-semibold text-ink-light hover:text-brand-blue truncate"
-                      >
-                        <Check className="w-3.5 h-3.5 text-brand-blue flex-shrink-0" />
-                        <span className="truncate">{prod}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* View Details Link */}
-                <div className="mt-auto pt-2">
-                  <button
-                    onClick={() => setActiveTab(slug === "marketing-materials" ? "marketing" : slug === "business-essentials" ? "business" : slug === "boxes-and-packaging" ? "packaging" : slug === "label-and-stickers" ? "stickers" : slug === "banner-and-signs" ? "signage" : "promo")}
-                    className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-blue hover:text-brand-blue/80 transition-colors cursor-pointer"
-                  >
-                    <span>Explore {products.length} Products</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/card:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+                </Reveal>
+              ))}
+            </div>
         ) : (
           /* Show expanded category detail with all products listed as clean links */
           <div className="space-y-12 text-left">
@@ -420,5 +379,6 @@ export default function ServicesList() {
         </Reveal>
       </div>
     </section>
+    </>
   );
 }

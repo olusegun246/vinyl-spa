@@ -16,6 +16,7 @@
   --color-border-subtle: #e5e5ea;
   --color-border-medium: #d2d2d7;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-poppins: var(--font-poppins), sans-serif;
 }
 
 /* === Base === */
