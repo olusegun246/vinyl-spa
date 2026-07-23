@@ -25,102 +25,82 @@ export const getProductSlug = (name: string) => {
 
 const categories = [
   {
-    label: "Marketing Materials",
-    displayLabel: "Marketing Materials",
+    label: "Print Products",
+    displayLabel: "Print Products",
     cols: 2,
     products: [
-      { name: "Business Flyers", href: "/services" },
-      { name: "Club Flyers", href: "/services" },
-      { name: "Custom Flyers", href: "/services" },
-      { name: "Direct Mail", href: "/services" },
-      { name: "Every Door Direct Mail", href: "/services" },
-      { name: "Event Flyers", href: "/services" },
-      { name: "Flyers", href: "/services" },
-      { name: "Folded Cards", href: "/services" },
-      { name: "Greeting Cards", href: "/services" },
-      { name: "Invitations", href: "/services" },
-      { name: "Magnets", href: "/services" },
-      { name: "Mailing Flyers", href: "/services" },
-      { name: "Menus", href: "/services" },
-      { name: "Postcards", href: "/services" },
-      { name: "Sell Sheets", href: "/services" },
-      { name: "Sticker Sheets", href: "/services/custom-stickers" },
-      { name: "Vinyl Banners", href: "/services/custom-banner-printing" }
+      { name: "Standard Business Cards" },
+      { name: "Square Business Cards" },
+      { name: "Business Cards" },
+      { name: "Appointment Cards" },
+      { name: "Loyalty Cards" },
+      { name: "Business Flyers" },
+      { name: "Club Flyers" },
+      { name: "Custom Flyers" },
+      { name: "Event Flyers" },
+      { name: "Flyers" },
+      { name: "Mailing Flyers" },
+      { name: "Sell Sheets" },
+      { name: "Postcards" },
+      { name: "Folded Cards" },
+      { name: "Greeting Cards" },
+      { name: "Invitations" },
+      { name: "Envelopes" },
+      { name: "Self-Seal Envelopes" },
+      { name: "Letterhead" },
+      { name: "Presentation Folders" },
+      { name: "Silk Presentation Folders" },
+      { name: "Carbonless Forms" },
+      { name: "Direct Mail" },
+      { name: "Every Door Direct Mail" },
+      { name: "Mailing Services" },
+      { name: "Menus" },
+      { name: "Magnets" }
     ]
   },
   {
-    label: "Business Essentials",
-    displayLabel: "Business Essentials",
+    label: "Banners & Signs",
+    displayLabel: "Banners & Signs",
     cols: 2,
     products: [
-      { name: "Appointment Cards", href: "/services" },
-      { name: "Business Cards", href: "/services" },
-      { name: "Business Flyers", href: "/services" },
-      { name: "Carbonless Forms", href: "/services" },
-      { name: "Direct Mail", href: "/services" },
-      { name: "Every Door Direct Mail", href: "/services" },
-      { name: "Envelopes", href: "/services" },
-      { name: "Flyers", href: "/services" },
-      { name: "Letterhead", href: "/services" },
-      { name: "Loyalty Cards", href: "/services" },
-      { name: "Mailing Flyers", href: "/services" },
-      { name: "Mailing Services", href: "/services" },
-      { name: "Postcards", href: "/services" },
-      { name: "Presentation Folders", href: "/services" },
-      { name: "Self-Seal Envelopes", href: "/services" },
-      { name: "Sell Sheets", href: "/services" },
-      { name: "Silk Presentation Folders", href: "/services" },
-      { name: "Square Business Cards", href: "/services" },
-      { name: "Standard Business Cards", href: "/services" },
-      { name: "Sticker Sheets", href: "/services/custom-stickers" },
-      { name: "Company Apparel", href: "/services/custom-tshirt-printing" }
+      { name: "Banners" },
+      { name: "Mesh Banners" },
+      { name: "Retractable Banners" },
+      { name: "Deluxe Retractable Banners" },
+      { name: "A-Frame Signs" },
+      { name: "Yard Signs" },
+      { name: "Posters" },
+      { name: "Mounted Posters" },
+      { name: "Window Decals" },
+      { name: "Window Clings" },
+      { name: "Wall Decals" },
+      { name: "Backdrops" },
+      { name: "Canvas Prints" },
+      { name: "Stretched Canvas" },
+      { name: "Rolled Canvas" },
+      { name: "Pole Banners" },
+      { name: "X-Banners" },
+      { name: "All Banners" },
+      { name: "All Signs" }
     ]
   },
   {
-    label: "Label and Stickers",
-    displayLabel: "Label and Stickers",
+    label: "Stickers & Labels",
+    displayLabel: "Stickers & Labels",
     cols: 2,
     products: [
-      { name: "Custom Stickers", href: "/services/custom-stickers" },
-      { name: "Sticker Sheets", href: "/services/custom-stickers" },
-      { name: "Bumper Stickers", href: "/services/custom-stickers" },
-      { name: "Clear Stickers", href: "/services/custom-stickers" },
-      { name: "Vinyl Stickers", href: "/services/custom-stickers" },
-      { name: "Oval Stickers", href: "/services/custom-stickers" },
-      { name: "Rectangle Stickers", href: "/services/custom-stickers" },
-      { name: "Round Stickers", href: "/services/custom-stickers" },
-      { name: "Square Stickers", href: "/services/custom-stickers" },
-      { name: "DTF Transfers", href: "/services/custom-tshirt-printing" },
-      { name: "Return Address Labels", href: "/services/custom-stickers" },
-      { name: "All Labels", href: "/services/custom-stickers" },
-      { name: "All Stickers", href: "/services/custom-stickers" }
-    ]
-  },
-  {
-    label: "Banner & Signs",
-    displayLabel: "Banner & Signs",
-    cols: 2,
-    products: [
-      { name: "A-Frame Signs", href: "/services" },
-      { name: "Backdrops", href: "/services" },
-      { name: "Banners", href: "/services/custom-banner-printing" },
-      { name: "Canvas Prints", href: "/services" },
-      { name: "Deluxe Retractable Banners", href: "/services" },
-      { name: "Mesh Banners", href: "/services/custom-banner-printing" },
-      { name: "Mounted Posters", href: "/services" },
-      { name: "Pole Banners", href: "/services" },
-      { name: "Posters", href: "/services" },
-      { name: "Retractable Banners", href: "/services" },
-      { name: "Rolled Canvas", href: "/services" },
-      { name: "Stretched Canvas", href: "/services" },
-      { name: "Vinyl Banners", href: "/services/custom-banner-printing" },
-      { name: "Wall Decals", href: "/services" },
-      { name: "Window Clings", href: "/services/custom-window-graphics" },
-      { name: "Window Decals", href: "/services/custom-window-graphics" },
-      { name: "X-Banners", href: "/services" },
-      { name: "Yard Signs", href: "/services" },
-      { name: "All Banners", href: "/services/custom-banner-printing" },
-      { name: "All Signs", href: "/services" }
+      { name: "Custom Stickers" },
+      { name: "Sticker Sheets" },
+      { name: "Vinyl Stickers" },
+      { name: "Clear Stickers" },
+      { name: "Return Address Labels" },
+      { name: "Bumper Stickers" },
+      { name: "Round Stickers" },
+      { name: "Oval Stickers" },
+      { name: "Square Stickers" },
+      { name: "Rectangle Stickers" },
+      { name: "All Labels" },
+      { name: "All Stickers" }
     ]
   },
   {
@@ -128,15 +108,28 @@ const categories = [
     displayLabel: "Promotional Items",
     cols: 2,
     products: [
-      { name: "Custom Apparel", href: "/services/custom-tshirt-printing" },
-      { name: "Embroidered Hats", href: "/services/custom-tshirt-printing" },
-      { name: "Branded Drinkware", href: "/services/custom-merchandise" },
-      { name: "Custom Ceramic Mugs", href: "/services/custom-merchandise" },
-      { name: "Tote Bags", href: "/services/custom-merchandise" },
-      { name: "All Promotional Items", href: "/services/custom-merchandise" }
+      { name: "Bookmarks" },
+      { name: "Bags" },
+      { name: "Table Cloths" },
+      { name: "Patches" },
+      { name: "Drinkware" },
+      { name: "Office & Stationery" },
+      { name: "Notepads" },
+      { name: "Business Card Magnets" },
+      { name: "Gift Certificates" },
+      { name: "CD/DVD Insert Printing" },
+      { name: "CD Products" },
+      { name: "DVD Products" },
+      { name: "Auto & Safety" },
+      { name: "Outdoor & Leisure" },
+      { name: "Technology" },
+      { name: "Tickets" },
+      { name: "Health & Wellness" },
+      { name: "Metallic Save-the-Date Cards" }
     ]
   }
 ];
+
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -207,14 +200,10 @@ export default function Navbar() {
               if (idx === 0) {
                 alignClass = "left-0";
               } else if (idx === 1) {
-                alignClass = "left-[-60px]";
-              } else if (idx === 2) {
                 alignClass = "left-[-80px]";
+              } else if (idx === 2) {
+                alignClass = "right-[-80px] left-auto";
               } else if (idx === 3) {
-                alignClass = "right-[-120px] left-auto";
-              } else if (idx === 4) {
-                alignClass = "right-[-60px] left-auto";
-              } else if (idx === 5) {
                 alignClass = "right-0 left-auto";
               }
 
@@ -255,6 +244,26 @@ export default function Navbar() {
                 </div>
               );
             })}
+
+            {/* Flat Category Links */}
+            <Link
+              href="/services/custom-tshirt-printing"
+              className="flex items-center px-3 py-1 text-[11px] lg:text-xs font-extrabold text-white hover:bg-white/10 border border-transparent rounded-lg transition-all duration-300 cursor-pointer"
+            >
+              Custom DTF
+            </Link>
+            <Link
+              href="/services/custom-banner-printing"
+              className="flex items-center px-3 py-1 text-[11px] lg:text-xs font-extrabold text-white hover:bg-white/10 border border-transparent rounded-lg transition-all duration-300 cursor-pointer"
+            >
+              Custom Banner
+            </Link>
+            <Link
+              href="/services/custom-tshirt-printing"
+              className="flex items-center px-3 py-1 text-[11px] lg:text-xs font-extrabold text-white hover:bg-white/10 border border-transparent rounded-lg transition-all duration-300 cursor-pointer"
+            >
+              Custom Embroidery
+            </Link>
 
             {/* View all products button (Moved in-line with the other category buttons) */}
             <div className="py-2.5">
@@ -325,6 +334,35 @@ export default function Navbar() {
                     </div>
                   </div>
                 ))}
+                
+                {/* Flat Mobile Links */}
+                <div className="w-full">
+                  <Link
+                    href="/services/custom-tshirt-printing"
+                    onClick={() => setOpen(false)}
+                    className="px-4 py-1.5 text-xs font-bold text-ink-light text-left block hover:text-brand-blue"
+                  >
+                    Custom DTF
+                  </Link>
+                </div>
+                <div className="w-full">
+                  <Link
+                    href="/services/custom-banner-printing"
+                    onClick={() => setOpen(false)}
+                    className="px-4 py-1.5 text-xs font-bold text-ink-light text-left block hover:text-brand-blue"
+                  >
+                    Custom Banner
+                  </Link>
+                </div>
+                <div className="w-full">
+                  <Link
+                    href="/services/custom-tshirt-printing"
+                    onClick={() => setOpen(false)}
+                    className="px-4 py-1.5 text-xs font-bold text-ink-light text-left block hover:text-brand-blue"
+                  >
+                    Custom Embroidery
+                  </Link>
+                </div>
               </div>
             </div>
 

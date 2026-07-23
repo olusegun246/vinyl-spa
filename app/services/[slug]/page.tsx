@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef, use } from "react";
+import { useState, useRef, use, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { 
   ArrowLeft, 
   UploadCloud, 
@@ -22,8 +22,45 @@ import { services } from "@/lib/services";
 
 export default function ServiceDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const slug = params?.slug as string;
   const existingService = services.find((s) => s.slug === slug);
+
+  // Referrer history-based dynamic breadcrumbs path
+  const [referrerPath, setReferrerPath] = useState<{ label: string; href: string }[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ref = document.referrer;
+      if (ref) {
+        try {
+          const url = new URL(ref);
+          if (url.pathname === "/") {
+            setReferrerPath([{ label: "Home", href: "/" }]);
+          } else if (url.pathname === "/services" || url.pathname.startsWith("/services")) {
+            setReferrerPath([{ label: "Services", href: "/services" }]);
+          } else if (url.pathname === "/design") {
+            setReferrerPath([{ label: "Design", href: "/design" }]);
+          } else {
+            setReferrerPath([
+              { label: "Home", href: "/" },
+              { label: "Services", href: "/services" }
+            ]);
+          }
+        } catch (e) {
+          setReferrerPath([
+            { label: "Home", href: "/" },
+            { label: "Services", href: "/services" }
+          ]);
+        }
+      } else {
+        setReferrerPath([
+          { label: "Home", href: "/" },
+          { label: "Services", href: "/services" }
+        ]);
+      }
+    }
+  }, []);
 
   // Helper to format title from slug
   const formatTitle = (s: string) => {
@@ -228,48 +265,42 @@ export default function ServiceDetailPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      {/* Top Header / Breadcrumb / Title Area in Clean White */}
-      <div className="pt-10 pb-8 px-6 lg:px-12 bg-white relative">
-        <div className="max-w-6xl mx-auto">
-          {/* Back Link Breadcrumb */}
-          <Reveal className="mb-6">
-            <Link 
-              href="/services" 
-              className="inline-flex items-center gap-2 text-sm font-semibold text-ink-light hover:text-brand-blue transition-colors group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              Back to Services
-            </Link>
-          </Reveal>
+      {/* Main Content Area: sage-green themed backdrop */}
+      <section className="py-10 px-6 lg:px-12 bg-[#B7CFB0] relative">
+        <div className="max-w-6xl mx-auto space-y-6">
 
-          {/* Page Header */}
-          <div className="max-w-4xl space-y-3">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-ink font-poppins leading-tight">
-              {service.title}
-            </h1>
-            <p className="text-sm md:text-base text-ink-light leading-relaxed max-w-2xl">
-              {service.longDescription}
-            </p>
+          {/* Dynamic Breadcrumbs Widget */}
+          <div className="flex text-left">
+            <nav className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/60 backdrop-blur-sm border border-black/5 rounded-full shadow-sm text-[10px] font-extrabold uppercase tracking-wider text-black/60 select-none">
+              {referrerPath.map((item) => (
+                <div key={item.href} className="flex items-center gap-2">
+                  <Link 
+                    href={item.href} 
+                    className="hover:text-brand-blue transition-colors cursor-pointer text-black/75 flex items-center gap-1"
+                  >
+                    {item.label === "Home" && (
+                      <svg className="w-3 h-3 -mt-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                      </svg>
+                    )}
+                    <span>{item.label}</span>
+                  </Link>
+                  <ChevronRight className="w-3 h-3 text-black/30 flex-shrink-0" strokeWidth={3} />
+                </div>
+              ))}
+              <span className="text-black font-black truncate max-w-[200px]">
+                {service.title}
+              </span>
+            </nav>
           </div>
-        </div>
-      </div>
 
-      {/* Main Form & Gallery Content Area on Dark Green Background */}
-      <section className="py-12 md:py-16 px-6 lg:px-12 bg-[#133E2B] relative border-t border-emerald-900/30">
-        {/* Soft atmospheric green radial glows */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-cyan/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/3 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none translate-y-1/3 -translate-x-1/4" />
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          {/* Core Layout Split */}
-          <div className="grid lg:grid-cols-12 gap-10 items-start">
+          {/* Core Grid: Left Side has Photos Gallery, Right Side has Title, Description, and Form */}
+          <div className="grid lg:grid-cols-12 gap-8 md:gap-10 items-start">
             
-            {/* Left Side: Machinery & Gallery (7 cols) */}
-            <div className="lg:col-span-7 space-y-8">
-              
-              {/* Pictures Gallery Showcase */}
+            {/* Left Column: Pictures Gallery Showcase (7 cols) - Sticky on scroll */}
+            <div className="lg:col-span-7 lg:sticky lg:top-24 space-y-4">
               <div className="space-y-4">
-                <Reveal className="relative w-full h-[500px] md:h-[650px] rounded-3xl overflow-hidden bg-slate-950 border border-emerald-900/60 shadow-xl group">
+                <Reveal className="relative w-full h-[500px] md:h-[650px] rounded-2xl overflow-hidden bg-slate-950 border border-border-subtle shadow-lg group">
                   {galleryPhotos[activePhoto] === "/coming-soon.jpg" && activePhoto > 0 ? (
                     <div className="absolute inset-0 bg-gradient-to-br from-[#1c1c1e] to-[#2c2c2e] flex flex-col items-center justify-center text-center p-6 select-none">
                       <Printer className="w-12 h-12 text-brand-cyan mb-3 opacity-80 animate-pulse" />
@@ -330,7 +361,7 @@ export default function ServiceDetailPage() {
                         type="button"
                         onClick={() => setActivePhoto(photoIdx)}
                         className={`relative aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all cursor-pointer ${
-                          activePhoto === photoIdx ? "border-brand-cyan scale-[1.02] shadow-lg" : "border-emerald-900/40 hover:border-emerald-800"
+                          activePhoto === photoIdx ? "border-brand-cyan scale-[1.02] shadow-lg" : "border-border-subtle hover:border-slate-300 bg-white"
                         }`}
                       >
                         <div className="absolute inset-0 bg-zinc-900/95 flex flex-col items-center justify-center text-center p-2">
@@ -344,258 +375,268 @@ export default function ServiceDetailPage() {
               </div>
             </div>
 
-          {/* Right Side: Order Desk (PDF upload + clover payment) (5 cols) */}
-          <div className="lg:col-span-5 space-y-8">
-            
-            {/* Main Interactive order builder */}
-            <Reveal className="bg-white border border-border-subtle rounded-3xl p-6 md:p-8 shadow-xl shadow-ink/5 text-left space-y-8 relative overflow-hidden">
+            {/* Right Column: Title + Description + Form (5 cols) */}
+            <div className="lg:col-span-5 space-y-6 text-left">
               
-              {/* Apple-style step card title */}
-              <div className="border-b border-border-subtle pb-6">
-                <h3 className="font-extrabold text-2xl text-ink tracking-tight">Print Submission Deck</h3>
-                <p className="text-xs text-ink-light mt-1">Upload your file and complete the Clover secure merchant deposit.</p>
-                
-                {/* Secondary Canva redirect button */}
-                <div className="mt-4 pt-4 border-t border-border-subtle/50 flex flex-col gap-2">
-                  <div className="text-[11px] font-semibold text-ink-light flex items-center gap-1.5">
-                    <Palette className="w-3.5 h-3.5 text-brand-blue" />
-                    Don&apos;t have a print-ready file?
-                  </div>
-                  <Link
-                    href={`/design?category=${
-                      service.slug === "custom-banner-printing" ? "banner" :
-                      service.slug === "custom-merchandise" ? "merch" :
-                      service.slug === "custom-window-graphics" ? "window" :
-                      service.slug === "custom-stickers" ? "stickers" :
-                      service.slug === "custom-tshirt-printing" ? "tshirt" :
-                      service.slug === "custom-organizational-tshirts" ? "org" : "tshirt"
-                    }`}
-                    className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-paper-cool border border-border-subtle text-xs font-extrabold text-ink hover:text-brand-blue hover:bg-brand-blue/5 rounded-xl transition-all uppercase tracking-wider"
-                  >
-                    Design Online (Template.io)
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+              {/* Product Title & Description right above the form */}
+              <div className="space-y-2">
+                <h1 className="text-2xl sm:text-3xl font-poppins font-black text-black tracking-tight leading-tight">
+                  {service.title}
+                </h1>
+                <p className="text-xs sm:text-xs text-black leading-relaxed font-medium">
+                  {service.longDescription}
+                </p>
               </div>
 
-              {/* STEP 1: PDF Uploader */}
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-ink text-sm uppercase tracking-wider flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[10px]">1</span>
-                    Upload Print PDF
-                  </h4>
-                  <span className="text-[10px] font-semibold text-ink-light uppercase">Required</span>
-                </div>
-
-                {!file ? (
-                  <div
-                    onDragEnter={handleDrag}
-                    onDragOver={handleDrag}
-                    onDragLeave={handleDrag}
-                    onDrop={handleDrop}
-                    onClick={triggerFileInput}
-                    className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${
-                      dragActive 
-                        ? "border-brand-blue bg-brand-blue/5 scale-[0.99]" 
-                        : "border-border-medium hover:border-brand-blue/40 bg-paper-cool/30"
-                    }`}
-                  >
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
-                    <UploadCloud className="w-10 h-10 text-brand-blue/60 mb-3 animate-pulse" />
-                    <span className="text-sm font-semibold text-ink">Drag & Drop print PDF</span>
-                    <span className="text-xs text-ink-light mt-1">or click to browse your folders</span>
-                    <span className="text-[9px] text-ink-light mt-3 uppercase font-medium bg-paper-cool px-2 py-0.5 rounded border border-border-subtle">Accepts PDF files only</span>
-                  </div>
-                ) : (
-                  <div className="border border-border-subtle rounded-2xl p-4 bg-paper-cool/30 flex flex-col gap-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 bg-brand-blue/10 rounded-xl flex items-center justify-center flex-shrink-0 text-brand-blue">
-                          <FileText className="w-5 h-5" />
-                        </div>
-                        <div className="min-w-0 text-left">
-                          <div className="text-sm font-bold text-ink truncate w-full">{file.name}</div>
-                          <div className="text-xs text-ink-light">{(file.size / 1024 / 1024).toFixed(2)} MB</div>
-                        </div>
+              {/* Main Interactive order builder form */}
+              <Reveal className="bg-white border border-border-subtle rounded-2xl p-6 md:p-8 shadow-md text-left space-y-8 relative overflow-hidden">
+                  
+                  {/* Apple-style step card title */}
+                  <div className="border-b border-border-subtle pb-6">
+                    <h3 className="font-extrabold text-xl text-ink tracking-tight">Print Submission Deck</h3>
+                    <p className="text-xs text-ink-light mt-1">Upload your file and complete the Clover secure merchant deposit.</p>
+                    
+                    {/* Secondary Canva redirect button */}
+                    <div className="mt-4 pt-4 border-t border-border-subtle/50 flex flex-col gap-2">
+                      <div className="text-[11px] font-semibold text-ink-light flex items-center gap-1.5">
+                        <Palette className="w-3.5 h-3.5 text-brand-blue" />
+                        Don&apos;t have a print-ready file?
                       </div>
-                      <button 
-                        type="button"
-                        onClick={() => { setFile(null); setSubmitSuccess(false); }} 
-                        className="text-xs font-semibold text-rose-500 hover:underline px-2 py-1"
-                        disabled={submitting}
+                      <Link
+                        href={`/design?category=${
+                          service.slug === "custom-banner-printing" ? "banner" :
+                          service.slug === "custom-merchandise" ? "merch" :
+                          service.slug === "custom-window-graphics" ? "window" :
+                          service.slug === "custom-stickers" ? "stickers" :
+                          service.slug === "custom-tshirt-printing" ? "tshirt" :
+                          service.slug === "custom-organizational-tshirts" ? "org" : "tshirt"
+                        }`}
+                        className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-paper-cool border border-border-subtle text-xs font-extrabold text-ink hover:text-brand-blue hover:bg-brand-blue/5 rounded-xl transition-all uppercase tracking-wider"
                       >
-                        Remove
-                      </button>
+                        Design Online (Template.io)
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* STEP 1: PDF Uploader */}
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-bold text-ink text-sm uppercase tracking-wider flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[10px]">1</span>
+                        Upload Print PDF
+                      </h4>
+                      <span className="text-[10px] font-semibold text-ink-light uppercase">Required</span>
                     </div>
 
-                    {submitting ? (
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-[10px] font-bold text-ink-light">
-                          <span>Submitting...</span>
-                          <span>{progress}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-border-medium rounded-full overflow-hidden">
-                          <div className="h-full bg-brand-blue transition-all duration-150" style={{ width: `${progress}%` }} />
-                        </div>
-                      </div>
-                    ) : submitSuccess ? (
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 text-left">
-                        <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                        <span>File Selected & Verified</span>
+                    {!file ? (
+                      <div
+                        onDragEnter={handleDrag}
+                        onDragOver={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDrop={handleDrop}
+                        onClick={triggerFileInput}
+                        className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 ${
+                          dragActive 
+                            ? "border-brand-blue bg-brand-blue/5 scale-[0.99]" 
+                            : "border-border-medium hover:border-brand-blue/40 bg-paper-cool/30"
+                        }`}
+                      >
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".pdf"
+                          onChange={handleFileChange}
+                          className="hidden"
+                        />
+                        <UploadCloud className="w-10 h-10 text-brand-blue/60 mb-3 animate-pulse" />
+                        <span className="text-sm font-semibold text-ink">Drag & Drop print PDF</span>
+                        <span className="text-xs text-ink-light mt-1">or click to browse your folders</span>
+                        <span className="text-[9px] text-ink-light mt-3 uppercase font-medium bg-paper-cool px-2 py-0.5 rounded border border-border-subtle">Accepts PDF files only</span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-brand-blue text-left">
-                        <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
-                        <span>PDF Loaded - Ready to Submit</span>
+                      <div className="border border-border-subtle rounded-2xl p-4 bg-paper-cool/30 flex flex-col gap-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-10 h-10 bg-brand-blue/10 rounded-xl flex items-center justify-center flex-shrink-0 text-brand-blue">
+                              <FileText className="w-5 h-5" />
+                            </div>
+                            <div className="min-w-0 text-left">
+                              <div className="text-sm font-bold text-ink truncate w-full">{file.name}</div>
+                              <div className="text-xs text-ink-light">{(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                            </div>
+                          </div>
+                          <button 
+                            type="button"
+                            onClick={() => { setFile(null); setSubmitSuccess(false); }} 
+                            className="text-xs font-semibold text-rose-500 hover:underline px-2 py-1"
+                            disabled={submitting}
+                          >
+                            Remove
+                          </button>
+                        </div>
+
+                        {submitting ? (
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-[10px] font-bold text-ink-light">
+                              <span>Submitting...</span>
+                              <span>{progress}%</span>
+                            </div>
+                            <div className="w-full h-1.5 bg-border-medium rounded-full overflow-hidden">
+                              <div className="h-full bg-brand-blue transition-all duration-150" style={{ width: `${progress}%` }} />
+                            </div>
+                          </div>
+                        ) : submitSuccess ? (
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 text-left">
+                            <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span>File Selected & Verified</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-brand-blue text-left">
+                            <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span>PDF Loaded - Ready to Submit</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
-                )}
-              </div>
 
-              {/* STEP 2: Contact Info Submission Form */}
-              <div className="space-y-4 pt-6 border-t border-border-subtle">
-                <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-ink text-sm uppercase tracking-wider flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[10px]">2</span>
-                    Contact Info & Submit
-                  </h4>
-                </div>
+                  {/* STEP 2: Contact Info Submission Form */}
+                  <div className="space-y-4 pt-6 border-t border-border-subtle">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-bold text-ink text-sm uppercase tracking-wider flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-extrabold text-[10px]">2</span>
+                        Contact Info & Submit
+                      </h4>
+                    </div>
 
-                {submitSuccess ? (
-                  <div className="p-6 bg-emerald-50/50 border border-emerald-200 rounded-2xl flex flex-col items-center text-center space-y-3">
-                    <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
-                      <CheckCircle className="w-6 h-6" />
-                    </div>
-                    <div className="text-left w-full space-y-2">
-                      <h4 className="font-bold text-emerald-800 text-center">Design Submitted Successfully!</h4>
-                      <p className="text-xs text-emerald-700 leading-relaxed text-center">
-                        Your print-ready PDF has been sent to our production email. We will review your file specs and text/call you at <span className="font-bold">{phone}</span> to finalize your order details for size <span className="font-bold">{selectedSize || sizeOptions[0]}</span>.
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmitDesign} className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">First Name</label>
-                          <input
-                            type="text"
-                            required
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            placeholder="John"
-                            className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                          />
+                    {submitSuccess ? (
+                      <div className="p-6 bg-emerald-50/50 border border-emerald-200 rounded-2xl flex flex-col items-center text-center space-y-3">
+                        <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+                          <CheckCircle className="w-6 h-6" />
                         </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Last Name</label>
-                          <input
-                            type="text"
-                            required
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            placeholder="Doe"
-                            className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                          />
+                        <div className="text-left w-full space-y-2">
+                          <h4 className="font-bold text-emerald-800 text-center">Design Submitted Successfully!</h4>
+                          <p className="text-xs text-emerald-700 leading-relaxed text-center">
+                            Your print-ready PDF has been sent to our production email. We will review your file specs and text/call you at <span className="font-bold">{phone}</span> to finalize your order details for size <span className="font-bold">{selectedSize || sizeOptions[0]}</span>.
+                          </p>
                         </div>
                       </div>
+                    ) : (
+                      <form onSubmit={handleSubmitDesign} className="space-y-4">
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">First Name</label>
+                              <input
+                                type="text"
+                                required
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                placeholder="John"
+                                className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Last Name</label>
+                              <input
+                                type="text"
+                                required
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                placeholder="Doe"
+                                className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                              />
+                            </div>
+                          </div>
 
-                      <div>
-                        <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Phone Number</label>
-                        <input
-                          type="text"
-                          required
-                          value={phone}
-                          onChange={handlePhoneChange}
-                          placeholder="(346) 218-0615"
-                          className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                        />
-                      </div>
+                          <div>
+                            <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Phone Number</label>
+                            <input
+                              type="text"
+                              required
+                              value={phone}
+                              onChange={handlePhoneChange}
+                              placeholder="(346) 218-0615"
+                              className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                            />
+                          </div>
 
-                      <div>
-                        <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Email Address</label>
-                        <input
-                          type="email"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="john.doe@example.com"
-                          className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                        />
-                      </div>
+                          <div>
+                            <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Email Address</label>
+                            <input
+                              type="email"
+                              required
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              placeholder="john.doe@example.com"
+                              className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                            />
+                          </div>
 
-                      <div>
-                        <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Select Product Size</label>
-                        <select
-                          value={selectedSize}
-                          onChange={(e) => setSelectedSize(e.target.value)}
-                          className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                          <div>
+                            <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Select Product Size</label>
+                            <select
+                              value={selectedSize}
+                              onChange={(e) => setSelectedSize(e.target.value)}
+                              className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                            >
+                              {sizeOptions.map((opt) => (
+                                <option key={opt} value={opt}>{opt}</option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Occasion</label>
+                            <select
+                              value={occasion}
+                              onChange={(e) => setOccasion(e.target.value)}
+                              className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
+                            >
+                              <option value="Personal">Personal</option>
+                              <option value="Wedding">Wedding</option>
+                              <option value="Business / Corporate">Business / Corporate</option>
+                              <option value="Birthday / Party">Birthday / Party</option>
+                              <option value="School / Team Sports">School / Team Sports</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {formError && (
+                          <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-xs font-medium flex items-start gap-2 text-left">
+                            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                            <span>{formError}</span>
+                          </div>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="w-full py-4 bg-brand-blue text-white font-bold rounded-xl hover:bg-brand-blue/95 transition-all shadow-md shadow-brand-blue/15 hover:shadow-lg flex items-center justify-center gap-2 hover:scale-[1.01] duration-300 disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none cursor-pointer"
                         >
-                          {sizeOptions.map((opt) => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-[11px] font-bold text-ink-light uppercase mb-1 text-left">Occasion</label>
-                        <select
-                          value={occasion}
-                          onChange={(e) => setOccasion(e.target.value)}
-                          className="w-full px-4 py-2.5 bg-paper-cool border border-border-subtle rounded-xl text-sm font-semibold text-ink focus:outline-none focus:border-brand-blue/50 transition-colors"
-                        >
-                          <option value="Personal">Personal</option>
-                          <option value="Wedding">Wedding</option>
-                          <option value="Business / Corporate">Business / Corporate</option>
-                          <option value="Birthday / Party">Birthday / Party</option>
-                          <option value="School / Team Sports">School / Team Sports</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {formError && (
-                      <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 rounded-xl text-xs font-medium flex items-start gap-2 text-left">
-                        <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                        <span>{formError}</span>
-                      </div>
+                          {submitting ? (
+                            <>
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                              Submitting Design...
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle className="w-4 h-4" />
+                              Submit Design File
+                            </>
+                          )}
+                        </button>
+                      </form>
                     )}
+                  </div>
+                </Reveal>
 
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="w-full py-4 bg-brand-blue text-white font-bold rounded-xl hover:bg-brand-blue/95 transition-all shadow-md shadow-brand-blue/15 hover:shadow-lg flex items-center justify-center gap-2 hover:scale-[1.01] duration-300 disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none cursor-pointer"
-                    >
-                      {submitting ? (
-                        <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Submitting Design...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle className="w-4 h-4" />
-                          Submit Design File
-                        </>
-                      )}
-                    </button>
-                  </form>
-                )}
               </div>
-            </Reveal>
-
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
       {/* Technical Specs & Guidelines Section on White Background */}
       <section className="py-12 px-6 lg:px-12 bg-white relative border-t border-border-subtle">

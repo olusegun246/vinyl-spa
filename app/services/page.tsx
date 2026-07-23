@@ -36,12 +36,12 @@ export default function ServicesPage() {
                 <span>Design Online</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border-medium bg-white text-ink font-bold rounded-full hover:bg-slate-50 hover:scale-[1.02] transition-all duration-300 text-xs md:text-sm"
+              <a
+                href="#services-list-section"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border-medium bg-white text-ink font-bold rounded-full hover:bg-slate-50 hover:scale-[1.02] transition-all duration-300 text-xs md:text-sm cursor-pointer"
               >
-                Get a Quote
-              </Link>
+                Explore Services
+              </a>
             </Reveal>
           </div>
 

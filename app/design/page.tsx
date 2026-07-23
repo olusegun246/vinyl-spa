@@ -40,110 +40,113 @@ const templates: DesignTemplate[] = [
 
 const categoriesData = [
   {
-    id: "marketing",
-    name: "Marketing Materials",
+    id: "print",
+    name: "Print Products",
     products: [
-      { name: "Business Flyers", templateId: "flyers", desc: "Premium flyers for advertising your business services." },
-      { name: "Club Flyers", templateId: "flyers", desc: "Vibrant custom club handouts and promotional event cards." },
+      { name: "Standard Business Cards", templateId: "business-cards", desc: "Classic high-volume 3.5\" x 2\" business cards." },
+      { name: "Square Business Cards", templateId: "business-cards", desc: "Modern 2.5\" x 2.5\" square profile layout cards." },
+      { name: "Business Cards", templateId: "business-cards", desc: "Premium custom printed double-sided business cards." },
+      { name: "Appointment Cards", templateId: "business-cards", desc: "Standard cards with writable backside grids." },
+      { name: "Loyalty Cards", templateId: "business-cards", desc: "Custom punch loyalty layout cards." },
+      { name: "Business Flyers", templateId: "flyers", desc: "Clean corporate sheets listing products or services." },
+      { name: "Club Flyers", templateId: "flyers", desc: "Vibrant high-gloss promotional event flyers." },
       { name: "Custom Flyers", templateId: "flyers", desc: "Bespoke print flyers tailored exactly to your dimensions." },
-      { name: "Direct Mail", templateId: "flyers", desc: "Promotional mailers built for targeted route deliveries." },
-      { name: "Every Door Direct Mail", templateId: "flyers", desc: "EDDM-compliant postcard mailers for local saturation marketing." },
       { name: "Event Flyers", templateId: "flyers", desc: "Eye-catching custom layouts for concerts, events, or galleries." },
       { name: "Flyers", templateId: "flyers", desc: "Multi-purpose single sheet advertisements." },
+      { name: "Mailing Flyers", templateId: "flyers", desc: "Direct mailers ready to fold, address, and ship." },
+      { name: "Sell Sheets", templateId: "flyers", desc: "Corporate product marketing sheets." },
+      { name: "Postcards", templateId: "flyers", desc: "Premium direct mail postcards with high-gloss finishes." },
       { name: "Folded Cards", templateId: "business-cards", desc: "Greeting cards, event menus, or half-fold promotional cards." },
       { name: "Greeting Cards", templateId: "business-cards", desc: "Premium custom folded greeting cards and envelopes." },
       { name: "Invitations", templateId: "business-cards", desc: "Elegant invites for weddings, corporate galas, or birthdays." },
-      { name: "Magnets", templateId: "stickers", desc: "High-grade custom outdoor magnetic signage." },
-      { name: "Mailing Flyers", templateId: "flyers", desc: "Direct mailers ready to fold, address, and ship." },
-      { name: "Menus", templateId: "flyers", desc: "Professional dining lists, takeout booklets, or single sheets." },
-      { name: "Postcards", templateId: "flyers", desc: "Standard direct mail postcards with high-gloss finishes." },
-      { name: "Sell Sheets", templateId: "flyers", desc: "Clean business portfolio layouts detailing products or services." },
-      { name: "Sticker Sheets", templateId: "stickers", desc: "Kiss-cut decals and branding graphics on single custom sheets." },
-      { name: "Vinyl Banners", templateId: "banner", desc: "Heavy-duty outdoor hanging grommeted vinyl banners." }
-    ]
-  },
-  {
-    id: "essentials",
-    name: "Business Essentials",
-    products: [
-      { name: "Appointment Cards", templateId: "business-cards", desc: "Standard 3.5\" x 2\" cards with writable backside surfaces." },
-      { name: "Business Cards", templateId: "business-cards", desc: "Double-sided premium networking cards with custom finishes." },
-      { name: "Business Flyers", templateId: "flyers", desc: "Professional product catalog lists and handouts." },
-      { name: "Carbonless Forms", templateId: "flyers", desc: "Multi-part carbonless NCR forms for invoices, receipts, and bids." },
-      { name: "Direct Mail", templateId: "flyers", desc: "Corporate mail templates ready for shipping routes." },
-      { name: "Every Door Direct Mail", templateId: "flyers", desc: "High-volume local marketing mailers." },
-      { name: "Envelopes", templateId: "business-cards", desc: "Standard #10 envelope templates custom printed with company logos." },
-      { name: "Flyers", templateId: "flyers", desc: "Standard single sheet marketing prints." },
-      { name: "Letterhead", templateId: "flyers", desc: "Standard 8.5\" x 11\" company letterheads." },
-      { name: "Loyalty Cards", templateId: "business-cards", desc: "Custom punch cards to drive repeat customer engagement." },
-      { name: "Mailing Flyers", templateId: "flyers", desc: "Folded newsletters and mailers ready for mailing stamps." },
-      { name: "Mailing Services", templateId: "flyers", desc: "Design flyers pre-formatted for direct mail saturation." },
-      { name: "Postcards", templateId: "flyers", desc: "Branded mailing postcards." },
-      { name: "Presentation Folders", templateId: "business-cards", desc: "Glossy die-cut folders with dual pockets and business card slots." },
+      { name: "Envelopes", templateId: "business-cards", desc: "Standard #10 envelopes printed with custom logos." },
       { name: "Self-Seal Envelopes", templateId: "business-cards", desc: "Peel-and-seal premium corporate envelope layouts." },
-      { name: "Sell Sheets", templateId: "flyers", desc: "Corporate product marketing sheets." },
-      { name: "Silk Presentation Folders", templateId: "business-cards", desc: "Ultra-premium presentation folders with a matte silk-laminate finish." },
-      { name: "Square Business Cards", templateId: "business-cards", desc: "Trendy 2.5\" x 2.5\" square profiles for modern networking." },
-      { name: "Standard Business Cards", templateId: "business-cards", desc: "Classic high-volume 3.5\" x 2\" business cards." },
-      { name: "Sticker Sheets", templateId: "stickers", desc: "Custom labeled sheets for product branding." },
-      { name: "Company Apparel", templateId: "tshirt", desc: "Branded polo shirts, tees, and custom staff uniforms." }
-    ]
-  },
-  {
-    id: "stickers",
-    name: "Label and Stickers",
-    products: [
-      { name: "Custom Stickers", templateId: "stickers", desc: "Premium die-cut or kiss-cut individual logo decals." },
-      { name: "Sticker Sheets", templateId: "stickers", desc: "Multiple custom shapes on a single paper sheet." },
-      { name: "Bumper Stickers", templateId: "stickers", desc: "Weatherproof vinyl stickers suited for vehicles." },
-      { name: "Clear Stickers", templateId: "stickers", desc: "Transparent backing decals for windows or products." },
-      { name: "Vinyl Stickers", templateId: "stickers", desc: "Heavy-duty outdoor stickers built for rugged use." },
-      { name: "Oval Stickers", templateId: "stickers", desc: "Sleek oval profile decals." },
-      { name: "Rectangle Stickers", templateId: "stickers", desc: "Classic rectangular label cuts." },
-      { name: "Round Stickers", templateId: "stickers", desc: "Circular product labels and logo badges." },
-      { name: "Square Stickers", templateId: "stickers", desc: "Perfect square-cut custom branding labels." },
-      { name: "DTF Transfers", templateId: "tshirt", desc: "Direct-to-film print transfers ready for heat presses." },
-      { name: "Return Address Labels", templateId: "stickers", desc: "Convenient mini address labels for packaging." },
-      { name: "All Labels", templateId: "stickers", desc: "General adhesive packaging stickers." },
-      { name: "All Stickers", templateId: "stickers", desc: "Multi-purpose sticker designs." }
+      { name: "Letterhead", templateId: "flyers", desc: "Standard 8.5\" x 11\" company letterhead sheets." },
+      { name: "Presentation Folders", templateId: "business-cards", desc: "Glossy die-cut folders with dual pockets and business card slots." },
+      { name: "Silk Presentation Folders", templateId: "business-cards", desc: "Presentation folders with matte silk-laminate finishes." },
+      { name: "Carbonless Forms", templateId: "flyers", desc: "Multi-part carbonless NCR forms for invoices, receipts, and bids." },
+      { name: "Direct Mail", templateId: "flyers", desc: "Promotional mailers built for targeted route deliveries." },
+      { name: "Every Door Direct Mail", templateId: "flyers", desc: "EDDM-compliant postcard mailers for local marketing." },
+      { name: "Mailing Services", templateId: "flyers", desc: "Design flyers pre-formatted for direct mail saturation." },
+      { name: "Menus", templateId: "flyers", desc: "Takeout menus and table dining booklets." },
+      { name: "Magnets", templateId: "stickers", desc: "High-grade custom outdoor magnetic signage." }
     ]
   },
   {
     id: "banners",
-    name: "Banner & Signs",
+    name: "Banners & Signs",
     products: [
-      { name: "A-Frame Signs", templateId: "banner", desc: "Double-sided street sidewalk signage boards." },
-      { name: "Backdrops", templateId: "banner", desc: "Step-and-repeat backdrops for photo booths and events." },
       { name: "Banners", templateId: "banner", desc: "General outdoor and hanging banners." },
-      { name: "Canvas Prints", templateId: "banner", desc: "Premium photo prints stretched onto canvas." },
-      { name: "Deluxe Retractable Banners", templateId: "banner", desc: "Premium pull-up banners with heavy-duty bases." },
       { name: "Mesh Banners", templateId: "banner", desc: "Perforated outdoor banners for windy fences." },
-      { name: "Mounted Posters", templateId: "banner", desc: "Thick rigid foam-board posters." },
-      { name: "Pole Banners", templateId: "banner", desc: "Double-sided street light pole banners." },
-      { name: "Posters", templateId: "banner", desc: "High-resolution prints for wall displays." },
       { name: "Retractable Banners", templateId: "banner", desc: "Standard trade show roll-up banners." },
-      { name: "Rolled Canvas", templateId: "banner", desc: "Unframed canvas art prints." },
-      { name: "Stretched Canvas", templateId: "banner", desc: "Stretched canvas prints ready to hang." },
-      { name: "Vinyl Banners", templateId: "banner", desc: "Heavy grommeted outdoor banners." },
-      { name: "Wall Decals", templateId: "stickers", desc: "Custom graphic stickers for interior walls." },
-      { name: "Window Clings", templateId: "window", desc: "Static non-adhesive window decals." },
-      { name: "Window Decals", templateId: "window", desc: "Adhesive storefront vinyl displays." },
-      { name: "X-Banners", templateId: "banner", desc: "Lightweight X-frame stand displays." },
+      { name: "Deluxe Retractable Banners", templateId: "banner", desc: "Premium pull-up banners with heavy-duty bases." },
+      { name: "A-Frame Signs", templateId: "banner", desc: "Double-sided street sidewalk signage boards." },
       { name: "Yard Signs", templateId: "banner", desc: "Corrugated plastic signs with metal H-stakes." },
+      { name: "Posters", templateId: "banner", desc: "High-resolution prints for wall displays." },
+      { name: "Mounted Posters", templateId: "banner", desc: "Thick rigid foam-board posters." },
+      { name: "Window Decals", templateId: "window", desc: "Adhesive storefront vinyl displays." },
+      { name: "Window Clings", templateId: "window", desc: "Static non-adhesive window decals." },
+      { name: "Wall Decals", templateId: "stickers", desc: "Custom graphic stickers for interior walls." },
+      { name: "Backdrops", templateId: "banner", desc: "Step-and-repeat backdrops for photo booths and events." },
+      { name: "Canvas Prints", templateId: "banner", desc: "Premium photo prints stretched onto canvas." },
+      { name: "Stretched Canvas", templateId: "banner", desc: "Stretched canvas prints ready to hang." },
+      { name: "Rolled Canvas", templateId: "banner", desc: "Unframed canvas art prints." },
+      { name: "Pole Banners", templateId: "banner", desc: "Double-sided street light pole banners." },
+      { name: "X-Banners", templateId: "banner", desc: "Lightweight X-frame stand displays." },
       { name: "All Banners", templateId: "banner", desc: "Custom banners in all sizes." },
       { name: "All Signs", templateId: "banner", desc: "General signs and signage." }
+    ]
+  },
+  {
+    id: "stickers",
+    name: "Stickers & Labels",
+    products: [
+      { name: "Custom Stickers", templateId: "stickers", desc: "Premium die-cut or kiss-cut individual logo decals." },
+      { name: "Sticker Sheets", templateId: "stickers", desc: "Multiple custom shapes on a single paper sheet." },
+      { name: "Vinyl Stickers", templateId: "stickers", desc: "Heavy-duty outdoor stickers built for rugged use." },
+      { name: "Clear Stickers", templateId: "stickers", desc: "Transparent backing decals for windows or products." },
+      { name: "Return Address Labels", templateId: "stickers", desc: "Convenient mini address labels for packaging." },
+      { name: "Bumper Stickers", templateId: "stickers", desc: "Weatherproof vinyl stickers suited for vehicles." },
+      { name: "Round Stickers", templateId: "stickers", desc: "Circular product labels and logo badges." },
+      { name: "Oval Stickers", templateId: "stickers", desc: "Sleek oval profile decals." },
+      { name: "Square Stickers", templateId: "stickers", desc: "Perfect square-cut custom branding labels." },
+      { name: "Rectangle Stickers", templateId: "stickers", desc: "Classic rectangular label cuts." },
+      { name: "All Labels", templateId: "stickers", desc: "General adhesive packaging stickers." },
+      { name: "All Stickers", templateId: "stickers", desc: "Multi-purpose sticker designs." }
     ]
   },
   {
     id: "promotional",
     name: "Promotional Items",
     products: [
-      { name: "Custom Apparel", templateId: "tshirt", desc: "Premium tees, hoodies, and jackets." },
-      { name: "Embroidered Hats", templateId: "hats", desc: "Stitch-embroidered caps and beanies." },
-      { name: "Branded Drinkware", templateId: "mugs", desc: "Insulated tumblers, flasks, and cups." },
-      { name: "Custom Ceramic Mugs", templateId: "mugs", desc: "Vibrant photo print coffee mugs." },
-      { name: "Tote Bags", templateId: "tshirt", desc: "Reusable canvas shopping tote bags." },
-      { name: "All Promotional Items", templateId: "tshirt", desc: "Promotional event merch and branding." }
+      { name: "Bookmarks", templateId: "tshirt", desc: "Branded page markers and promotional bookmarks." },
+      { name: "Bags", templateId: "tshirt", desc: "Custom bags, totes, and pouches." },
+      { name: "Table Cloths", templateId: "tshirt", desc: "Custom table throws and fitted covers for tradeshows." },
+      { name: "Patches", templateId: "tshirt", desc: "Embroidered, woven, or PVC backing patches." },
+      { name: "Drinkware", templateId: "mugs", desc: "Custom cups, mugs, and insulated bottles." },
+      { name: "Office & Stationery", templateId: "flyers", desc: "Stationery, folders, and branded desk accessories." },
+      { name: "Notepads", templateId: "flyers", desc: "Custom printed memo sheets and writing pads." },
+      { name: "Business Card Magnets", templateId: "stickers", desc: "Magnetic cards for refrigerators and metal cabinets." },
+      { name: "Gift Certificates", templateId: "flyers", desc: "Premium custom printed gift vouchers." },
+      { name: "CD/DVD Insert Printing", templateId: "flyers", desc: "Standard booklet inserts for disk cases." },
+      { name: "CD Products", templateId: "flyers", desc: "Branded CD packages and materials." },
+      { name: "DVD Products", templateId: "flyers", desc: "Custom DVD cases and sleeves." },
+      { name: "Auto & Safety", templateId: "stickers", desc: "Safety decals, decals for commercial autos." },
+      { name: "Outdoor & Leisure", templateId: "tshirt", desc: "Promotional umbrellas, chairs, and outdoor gear." },
+      { name: "Technology", templateId: "tshirt", desc: "USB drives, tech stickers, and phone accessories." },
+      { name: "Tickets", templateId: "flyers", desc: "Numbered tickets with perforation lines." },
+      { name: "Health & Wellness", templateId: "tshirt", desc: "Promotional personal hygiene and safety products." },
+      { name: "Metallic Save-the-Date Cards", templateId: "business-cards", desc: "Shimmering save-the-date cards." }
+    ]
+  },
+  {
+    id: "custom",
+    name: "Custom Services",
+    products: [
+      { name: "Custom DTF Transfers", templateId: "tshirt", desc: "Direct-to-Film transfer sheet prints ready for press." },
+      { name: "Custom Embroidery", templateId: "hats", desc: "Premium stitch embroidery on caps, beanies, or shirts." },
+      { name: "Custom Banners", templateId: "banner", desc: "Large-format outdoor weatherproof hanging vinyl banners." },
+      { name: "Company Apparel", templateId: "tshirt", desc: "Branded polo shirts, crewneck tees, and team uniforms." }
     ]
   }
 ];
@@ -151,7 +154,7 @@ const categoriesData = [
 function DesignWorkspaceContent() {
   const [activeTemplate, setActiveTemplate] = useState<DesignTemplate>(templates[0]);
   const [wizardStep, setWizardStep] = useState<"select-product" | "editor">("select-product");
-  const [selectedCategoryTab, setSelectedCategoryTab] = useState("marketing");
+  const [selectedCategoryTab, setSelectedCategoryTab] = useState("print");
   const searchParams = useSearchParams();
   const categoryParam = searchParams ? searchParams.get("category") : null;
 
